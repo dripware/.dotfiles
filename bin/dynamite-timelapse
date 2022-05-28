@@ -1,0 +1,19 @@
+HOUR=0
+MIN=0
+STEP=5
+while : ; do
+	if (( $MIN + $STEP >= 60)); then
+		HOUR=$(($HOUR + 1 ))
+		MIN=0
+	else
+		MIN=$(($MIN + $STEP ))
+	fi
+	if (( $HOUR > 23 )); then
+		HOUR=0
+		MIN=0
+	fi
+	echo -ne "\033[2K\r"
+	echo -n "$HOUR:$MIN"
+	faketime "$HOUR:$MIN" ./dynamite-update &> /dev/null
+	sleep 0.1
+done

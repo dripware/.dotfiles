@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+LEN=100
+STEP=2
+TOTAL=$(( $LEN / $STEP * 4))
+
+SOURCEDIR=~/.dotfiles/wallpapers/source
+OUTDIR=~/.dotfiles/wallpapers/out
+MORNING=$SOURCEDIR/morning.jpg
+DAY=$SOURCEDIR/day.jpg
+EVENING=$SOURCEDIR/evening.jpg
+NIGHT=$SOURCEDIR/night.jpg
+
+update_progress(){
+	echo -ne "\033[2K\rGenerating Wallpapers... $(( ( $(ls $OUTDIR -l | wc -l ) -1 ) * 100 / $TOTAL ))%" >&2
+}
+rm -rf $OUTDIR
+mkdir $OUTDIR &> /dev/null
+
+gen_loop(){
+	PIC1="$1"
+	PIC2="$2"
+	PIC1_NAME=$(basename $PIC1 .jpg)
+	i=0
+	while (( $i < $LEN/2 )); do
+		FILENAME="$PIC1_NAME-$i.jpg"
+		magick convert $PIC1 \( $PIC2 -alpha set -channel A -evaluate set $((i * 2))% \) -compose lighten -composite $OUTDIR/$FILENAME
+		update_progress
+		i=$(($i + ( $STEP ) ))
+	done
+	while (( $i < $LEN )); do
+		FILENAME="$PIC1_NAME-$i.jpg"
+		magick convert $PIC2 \( $PIC1 -alpha set -channel A -evaluate set $(( 100 - (i - LEN/2) * 2 ))% \) -compose lighten -composite $OUTDIR/$FILENAME
+		update_progress
+		i=$(($i + ( $STEP ) ))
+	done
+}
+gen_section(){
+	gen_loop $1 $2
+}
+gen_section $MORNING $DAY |
+(sleep 0.5 && gen_section $DAY $EVENING) |
+(sleep 1 && gen_section $EVENING $NIGHT) |
+(sleep 1.5 && gen_section $NIGHT $MORNING)

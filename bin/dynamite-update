@@ -1,0 +1,63 @@
+MORNING_TIME=600
+DAY_TIME=1300
+EVENING_TIME=2000
+NIGHT_TIME=2200
+
+MORNING_WEIGHT=10
+DAY_WEIGHT=10
+EVENING_WEIGHT=10
+NIGHT_WEIGHT=20
+OUTDIR=~/.dotfiles/wallpapers/out
+
+STEP=2
+
+neg(){
+	if (( $2 < $1 )); then
+		echo $(( 2400 + $2 - $1))
+	else
+		echo $(( $2 - $1))
+	fi
+}
+
+TIME=$(( $(date +%-H) * 100 + $(date +%-M) * 100 / 60 ))
+
+is_between(){
+	TIME1=$1
+	TIME2=$2
+	NEW_TIME=$TIME
+	if (( $2 < $1 )); then
+		TIME2=$(( 2400 + $2))
+		if (( $TIME < $TIME1 )); then
+			NEW_TIME=$(( 2400 + $TIME))
+		fi
+	fi
+	if (( $NEW_TIME >= $TIME1  )) && (( $NEW_TIME < $TIME2 )); then
+		return 0
+	else
+		return 1
+	fi
+}
+set_wallpaper(){
+	START=$1
+	END=$2
+	NAME=$3
+	WEIGHT=$4
+	PERCENT=$(( ( ( $(neg $START $TIME) * 100 / $(neg $START $END) * 10 / $WEIGHT ) % 100 ) / $STEP * $STEP ))
+	FILENAME="$NAME-$PERCENT.jpg"
+	echo $FILENAME
+	feh --bg-scale --no-fehbg $OUTDIR/$FILENAME
+	echo "$FILENAME" >> /tmp/dynamite-log
+}
+
+
+if is_between $MORNING_TIME $DAY_TIME; then # it's morning
+	set_wallpaper $MORNING_TIME $DAY_TIME morning $MORNING_WEIGHT
+elif is_between $DAY_TIME $EVENING_TIME; then # it's day
+	set_wallpaper $DAY_TIME $EVENING_TIME day $DAY_WEIGHT
+elif is_between $EVENING_TIME $NIGHT_TIME; then # it's evening
+	set_wallpaper $EVENING_TIME $NIGHT_TIME evening $EVENING_WEIGHT
+elif is_between $NIGHT_TIME $MORNING_TIME; then # it's night
+	set_wallpaper $NIGHT_TIME $MORNING_TIME night $NIGHT_WEIGHT
+else
+	echo "ERROR"
+fi
