@@ -3,10 +3,10 @@ DAY_TIME=1300
 EVENING_TIME=2000
 NIGHT_TIME=2200
 
-MORNING_WEIGHT=10
-DAY_WEIGHT=10
-EVENING_WEIGHT=10
-NIGHT_WEIGHT=20
+MORNING_WEIGHT=0
+DAY_WEIGHT=1.2
+EVENING_WEIGHT=0
+NIGHT_WEIGHT=1.4
 OUTDIR=~/.dotfiles/wallpapers/out
 
 STEP=2
@@ -37,16 +37,31 @@ is_between(){
 		return 1
 	fi
 }
+get_percent(){
+	START=$1
+	END=$2
+	WEIGHT=$3
+	TAKEN_FRACTION=$(neg $START $TIME)
+	TOTAL_FRACTION=$(neg $START $END)
+	RAW_PERCENT=$(( $TAKEN_FRACTION * 100 / $TOTAL_FRACTION ))
+	if [[ $WEIGHT ]]; then
+		WEIGHT_ADJUSTED=$(awk -v weight=$WEIGHT -v percent=$RAW_PERCENT 'BEGIN{print int(percent * (percent/100)^weight)}' )
+	else
+		WEIGHT_ADJUSTED=$RAW_PERCENT
+	fi
+	STEP_ADJUSTED=$(( $WEIGHT_ADJUSTED / $STEP * $STEP  ))
+	echo $STEP_ADJUSTED
+}
 set_wallpaper(){
 	START=$1
 	END=$2
 	NAME=$3
 	WEIGHT=$4
-	PERCENT=$(( ( ( $(neg $START $TIME) * 100 / $(neg $START $END) * 10 / $WEIGHT ) % 100 ) / $STEP * $STEP ))
+	PERCENT=$(get_percent $START $END $WEIGHT)
 	FILENAME="$NAME-$PERCENT.jpg"
 	echo $FILENAME
 	feh --bg-scale --no-fehbg $OUTDIR/$FILENAME
-	echo "$FILENAME" >> /tmp/dynamite-log
+	echo "$(date +%D +%H:+%M) $FILENAME" >> /tmp/dynamite-log
 }
 
 

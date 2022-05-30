@@ -1,6 +1,6 @@
 HOUR=0
 MIN=0
-STEP=5
+STEP=10
 while : ; do
 	if (( $MIN + $STEP >= 60)); then
 		HOUR=$(($HOUR + 1 ))
@@ -12,8 +12,6 @@ while : ; do
 		HOUR=0
 		MIN=0
 	fi
-	echo -ne "\033[2K\r"
-	echo -n "$HOUR:$MIN"
-	faketime "$HOUR:$MIN" ./dynamite-update &> /dev/null
-	sleep 0.1
+	echo -ne "\033[2K\r$HOUR:$MIN	$(faketime "$HOUR:$MIN" ./dynamite-update)"
+	sleep 0.4
 done

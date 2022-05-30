@@ -22,7 +22,7 @@
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
   # Set your time zone.
-  time.timeZone = "Iran/Tehran";
+  time.timeZone = "Asia/Tehran";
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -54,7 +54,7 @@
   services.cron = {
     enable = true;
     systemCronJobs = [
-      "* */5 * * *	dripware	~/.dotfiles/bin/dynamite-update"
+      "*/5 * * * *	dripware	dynamite-update"
     ];
   };
 
@@ -79,18 +79,6 @@
   users.users.dripware = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
-    packages = with pkgs; [
-      brave
-      feh
-      imagemagick
-      graphicsmagick
-      libfaketime
-      neovim
-      gimp
-      htop
-      ncdu
-      git
-    ];
   };
 
   # List packages installed in system profile. To search, run:
@@ -99,7 +87,11 @@
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
   ];
-  environment.loginShellInit = "~/.dotfiles/bin/dynamite-update";
+  fonts.fonts = with pkgs; [
+    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+  ];
+  environment.loginShellInit = "dynamite-update";
+  environment.localBinInPath = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
