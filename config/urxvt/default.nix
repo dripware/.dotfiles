@@ -44,5 +44,9 @@
     # White
     "color7"      = "#d4be98";
     "color15"     = "#d4be98";
+
+
+    # Extensions
+    "perl-ext-common"    = "bidi";
   };
 }
