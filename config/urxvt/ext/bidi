@@ -1,4 +1,4 @@
-#! perl
+#!/usr/bin/env perl
 
 =head1 NAME
 
@@ -94,6 +94,8 @@ correctly, and equation environments be considered a paragraph (so that it is
 displayed on the left).
 
 =cut
+
+use lib '/nix/store/vi6xrg05dg5if9x211x3hdjc4jb833g7-perl-5.34.1-env/lib/perl5/site_perl/5.34.1/x86_64-linux-thread-multi';
 
 use 5.10.0;
 use Text::Bidi qw(log2vis is_bidi);

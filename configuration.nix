@@ -40,6 +40,7 @@
   services.xserver.enable = true;
   services.xserver.displayManager.sddm.enable = true;
   services.xserver.windowManager.qtile.enable = true;
+  services.urxvtd.enable = true;
 
   services.picom = {
     enable = true;
@@ -84,11 +85,13 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    vim 
     wget
   ];
   fonts.fonts = with pkgs; [
     (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+    vazir-fonts
+    vazir-code-font
   ];
   environment.loginShellInit = "dynamite-update";
   environment.localBinInPath = true;
