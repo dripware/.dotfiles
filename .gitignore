@@ -1,3 +1,5 @@
 wallpapers/out
 hardware-configuration.nix
+# device.nix contains information about which device grub should boot from
+device.nix
 result

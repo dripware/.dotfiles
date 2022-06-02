@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
+# automated install script for nixos for quickly setting up an install from live iso
 set -e
+HERE="$(cd -- "$(dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null & pwd 2> /dev/null; )"
+echo $HERE
 is_root(){
 	if [[ "$USER" == "root" ]]; then
 		return 0
@@ -68,9 +71,13 @@ ask_for_password(){
 ask_for_username(){
 	__prompt "Enter username (must match username in home-manager config): "
 }
+ask_for_machine_name(){
+	__prompt "Enter name for computer (must match name in nixos config): "
+}
 ask_for_inputs(){
 	DEVICE="$(ask_for_device)"
 	SWAP_SIZE="$(ask_for_swap_size)"
+	MACHINE_NAME="$(ask_for_machine_name)"
 	USERNAME="$(ask_for_username)"
 	ROOT_PASSWORD="$(ask_for_password "Enter root password")"
 
@@ -101,12 +108,21 @@ mount_partitions(){
 	mount "$DEVICE"1 /mnt
 	swapon "$DEVICE"2
 }
+generate_hardware_config(){
+	nixos-generate-config --root /mnt
+	mv /mnt/etc/nixos/hardware-configuration.nix "$HERE"
+}
+generate_device_dot_nix(){
+	echo "\"$DEVICE\"" > "$HERE"/device.nix
+}
+build_system(){
+	nix-shell -p nixUnstable git --run "nix build $HERE#nixosConfigurations.$MACHINE_NAME.config.system.build.toplevel --extra-experimental-features 'nix-command flakes'"
+}
 
 ask_for_inputs
 partition_device
 format_partitions
 mount_partitions
-
-
-
-
+generate_hardware_config
+generate_device_dot_nix
+build_system
