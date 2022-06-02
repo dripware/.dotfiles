@@ -3,11 +3,10 @@
 set -e
 HERE="$(cd -- "$(dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null & pwd 2> /dev/null; )"
 echo $HERE
-is_root(){
-	if [[ "$USER" == "root" ]]; then
-		return 0
-	else
-		return 1
+check_root(){
+	if [[ "$USER" != "root" ]]; then
+		echo "RUN ONLY AS ROOT"
+		exit
 	fi
 }
 __prompt(){
@@ -106,7 +105,9 @@ format_partitions(){
 }
 mount_partitions(){
 	mount "$DEVICE"1 /mnt
-	swapon "$DEVICE"2
+	if (( $SWAP_SIZE != 0 )); then
+		swapon "$DEVICE"2
+	fi
 }
 generate_hardware_config(){
 	nixos-generate-config --root /mnt
@@ -118,8 +119,13 @@ generate_device_dot_nix(){
 build_system(){
 	nix-shell -p nixUnstable git --run "nix build $HERE#nixosConfigurations.$MACHINE_NAME.config.system.build.toplevel --extra-experimental-features 'nix-command flakes'"
 }
+unmount_partitions_if_mounted(){
+	swapoff -a
+	umount -a
+}
 
 ask_for_inputs
+unmount_partitions_if_mounted
 partition_device
 format_partitions
 mount_partitions
