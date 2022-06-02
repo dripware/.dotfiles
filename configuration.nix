@@ -9,10 +9,12 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
+  boot.loader.grub = {
+    enable = true;
+    version = 2;
+    device = "/dev/sda";
+  };
 
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
 
   nix.extraOptions = "experimental-features = nix-command flakes";
 
