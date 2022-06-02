@@ -155,11 +155,12 @@ install_nixos(){
 	nixos-enter --root /mnt -c "echo $USERNAME:$USER_PASSWORD | chpasswd"
 }
 
-fetch_dotfiles(){
-	nixos-enter --root /mnt -c "sudo -Hu $USERNAME git clone https://github.com/dripware/.dotfiles /home/$USERNAME/.dotfiles"
-	cp $HERE/system_local /mnt/home/$USERNAME/.dotfiles -r
+copy_dotfiles(){
+	__print "copying dotfiles to newly installed nixos..."
+	cp $HERE /mnt/home/$USERNAME/.dotfiles -r
 	rm -rf /mnt/home/$USERNAME/.dotfiles/.git/hooks
 	ln /mnt/home/$USERNAME/.dotfiles/.githooks /mnt/home/$USERNAME/.dotfiles/.git/hooks
+	nixos-enter --root /mnt -c "chown -R $USERNAME /mnt/home/$USERNAME/.dotfiles/**/*.*"
 }
 install_homemanager(){
 	__print "installing home-manager..."
