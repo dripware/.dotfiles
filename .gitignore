@@ -1,5 +1,4 @@
 wallpapers/out
-hardware-configuration.nix
-# device.nix contains information about which device grub should boot from
-device.nix
+# hardware folder is an auto-generated nix flake which is used to extract extra information for nixos install such as hardware-configuration.nix
+hardware
 result
