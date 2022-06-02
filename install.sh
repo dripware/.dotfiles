@@ -99,7 +99,7 @@ partition_device(){
 	fi
 }
 format_partitions(){
-	mkfs.ext4 -L nixos "$DEVICE"1
+	mkfs.ext4 -q -L nixos "$DEVICE"1
 	if (( $SWAP_SIZE != 0 )); then
 		mkswap -L swap "$DEVICE"2
 	fi
