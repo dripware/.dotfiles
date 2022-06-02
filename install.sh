@@ -121,7 +121,7 @@ build_system(){
 }
 unmount_partitions_if_mounted(){
 	swapoff -a
-	umount -A "$DEVICE"
+	umount "$DEVICE"?
 }
 
 ask_for_inputs
