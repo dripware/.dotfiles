@@ -2,17 +2,17 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, system_local, ... }:
 
 {
   imports =
     [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
+      (system_local.hardware_configuration)
     ];
   boot.loader.grub = {
     enable = true;
     version = 2;
-    device = import ./device.nix;
+    device = system_local.disk;
   };
 
 

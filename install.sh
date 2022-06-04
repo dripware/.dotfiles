@@ -2,10 +2,12 @@
 # automated install script for nixos for quickly setting up an install from live iso
 set -e
 HERE="$(cd -- "$(dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null & pwd 2> /dev/null; )"
-echo $HERE
+__print(){
+	echo -e "\e[1m\e[35m$@\e[0m" >&2
+}
 check_root(){
 	if [[ "$USER" != "root" ]]; then
-		echo "RUN ONLY AS ROOT"
+		__print "RUN ONLY AS ROOT"
 		exit
 	fi
 }
@@ -20,9 +22,9 @@ __prompt(){
 		fi
 	done
 }
-ask_for_device(){
+ask_for_disk(){
 	lsblk >&2
-	__prompt "which device do you want to install nixos on? (e.g. /dev/sda): "
+	__prompt "which disk device do you want to install nixos on? (e.g. /dev/sda): "
 }
 
 ask_for_swap_size(){
@@ -49,7 +51,7 @@ prompt_boolean(){
 		elif [[ "$ANS" == "n" ]]; then
 			return 1
 		else
-			echo "what?" >&2
+			__print "what?"
 		fi
 	done
 }
@@ -63,7 +65,7 @@ ask_for_password(){
 			echo "$PASS"
 			return 0
 		else
-			echo -e "Password did not match.\n" >&2
+			__print "Password did not match.\n"
 		fi
 	done
 }
@@ -74,7 +76,7 @@ ask_for_machine_name(){
 	__prompt "Enter name for computer (must match name in nixos config): "
 }
 ask_for_inputs(){
-	DEVICE="$(ask_for_device)"
+	DISK="$(ask_for_disk)"
 	SWAP_SIZE="$(ask_for_swap_size)"
 	MACHINE_NAME="$(ask_for_machine_name)"
 	USERNAME="$(ask_for_username)"
@@ -86,11 +88,18 @@ ask_for_inputs(){
 		USER_PASSWORD="$(ask_for_password "Enter $USERNAME password")"
 	fi
 }
-
-__parted(){
-	parted "$DEVICE" -s -- $@
+clean_before_install(){
+	__print "unmounting $DISK..."
+	swapoff -a
+	MOUNTED="$(mount | grep $DISK | awk '{print $1}')"
+	for i in $MOUNTED; do umount $i; done
+	rm -rf $HERE/system_local
 }
-partition_device(){
+__parted(){
+	parted "$DISK" -s -- $@
+}
+partition_disk(){
+	__print "partitioning $DISK..."
 	__parted mklabel msdos
 	__parted mkpart primary 1MiB "-$SWAP_SIZE"GB
 	if (( $SWAP_SIZE != 0 )); then
@@ -98,37 +107,60 @@ partition_device(){
 	fi
 }
 format_partitions(){
-	mkfs.ext4 -q -L nixos "$DEVICE"1
+	__print "formating partitions in $DISK..."
+	mkfs.ext4 -q -L nixos "$DISK"1
 	if (( $SWAP_SIZE != 0 )); then
-		mkswap -L swap "$DEVICE"2
+		mkswap -L swap "$DISK"2
 	fi
 }
 mount_partitions(){
-	mount "$DEVICE"1 /mnt
+	__print "mounting partitions..."
+	mount "$DISK"1 /mnt
 	if (( $SWAP_SIZE != 0 )); then
-		swapon "$DEVICE"2
+		swapon "$DISK"2
 	fi
 }
-generate_hardware_config(){
+__generate_hardware_config(){
+	__print "generating hardware-configuration..."
 	nixos-generate-config --root /mnt
-	mv /mnt/etc/nixos/hardware-configuration.nix "$HERE"
+	cp /mnt/etc/nixos/hardware-configuration.nix "$HERE"/system_local
+	rm /mnt/etc/nixos/*
 }
-generate_device_dot_nix(){
-	echo "\"$DEVICE\"" > "$HERE"/device.nix
+generate_system_system_local(){
+	__print "generating system_local flake..."
+	mkdir $HERE/system_local
+	__generate_hardware_config
+	cat > $HERE/system_local/flake.nix <<- EOF
+	{
+	  description = "local flake only used to keep some extra variable for this nixos install";
+	  outputs = { self, nixpkgs }: {
+	    disk = "$DISK";
+	    hardware-configuration = import ./hardware-configuration.nix;
+          };
+        }
+	EOF
 }
-build_system(){
-	nix-shell -p nixUnstable git --run "nix build $HERE#nixosConfigurations.$MACHINE_NAME.config.system.build.toplevel --extra-experimental-features 'nix-command flakes'"
+update_flake(){
+	nix flake update $HERE#
 }
-unmount_partitions_if_mounted(){
-	swapoff -a
-	umount "$DEVICE"?
+install_nixos(){
+	__print "installing nixos..."
+	nix-shell -p nixUnstable git --run "nix build --extra-experimental-features 'nix-command flakes' .#nixosConfigurations.machine.config.system.build.toplevel --show-trace"
+	# nixos-install --root /mnt --system "$(nix path-info --extra-experimental-features 'nix-command flakes' "$HERE#nixosConfigurations.$MACHINE_NAME.config.system.build.toplevel")"
+}
+install_homemanager(){
+	__print "installing home-manager..."
+	nix-shell -p nixUnstable git --run "nix build --no-link $HERE#homeConfigurations.$USERNAME.activationPackage --extra-experimental-features 'nix-command flakes'"
+	"$(nix path-info --extra-experimental-features 'nix-command flakes')"/activate
 }
 
+check_root
 ask_for_inputs
-unmount_partitions_if_mounted
-partition_device
+clean_before_install
+partition_disk
 format_partitions
 mount_partitions
-generate_hardware_config
-generate_device_dot_nix
-build_system
+generate_system_system_local
+update_flake
+install_nixos
+# install_homemanager

@@ -7,14 +7,16 @@
       url = github:nix-community/home-manager;
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    system_local.url = "path:./system_local";
   };
-  outputs = { self, nixpkgs, home-manager }@inputs:
+  outputs = { self, nixpkgs, home-manager, system_local }@inputs:
     let 
       system = "x86_64-linux";
       username = "dripware";
     in {
       nixosConfigurations.machine = nixpkgs.lib.nixosSystem {
         inherit system;
+	specialArgs = { inherit system_local; };
         modules = [ ./configuration.nix ];
       };
       homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
