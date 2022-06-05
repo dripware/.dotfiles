@@ -141,6 +141,7 @@ generate_system_system_local(){
 	EOF
 }
 update_flake(){
+	__print "updating nix flake..."
 	nix flake update "$HERE#" --extra-experimental-features 'nix-command flakes'
 }
 git_add_system_local(){
@@ -149,26 +150,18 @@ git_add_system_local(){
 git_rm_system_local(){
 	git --git-dir $HERE/.git rm $HERE/system_local -rf
 }
-set_tmpdir(){
-	__print "rebuilding live cd nixos configuration with TMPDIR variable for nix build..."
-	[ ! -d /mnt/tmp ] && (mkdir /mnt/tmp; chown -R nixos /mnt/tmp )
-	cat > /mnt/tmp/tmp-config.nix <<- EOF
-		{ config, pkgs, ... }:
-		{
-			imports = [ <nixpkgs/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix> ];
-			systemd.services.nix-daemon.environment.TMPDIR = "/mnt/tmp";
-		}
-	EOF
-}
 install_nixos(){
 	__print "installing nixos..."
-	sudo -H -u nixos nix-shell -p nixUnstable git --run "nix build --extra-experimental-features 'nix-command flakes' .#nixosConfigurations.machine.config.system.build.toplevel --show-trace"
-	# nixos-install --root /mnt --system "$(nix path-info --extra-experimental-features 'nix-command flakes' "$HERE#nixosConfigurations.$MACHINE_NAME.config.system.build.toplevel")"
+	nixos-install --flake "$HERE#$MACHINE_NAME" --no-root-password
+	nixos-enter --root /mnt -c "echo root:$ROOT_PASSWORD | chpasswd"
+	nixos-neter --root /mnt -c "echo $USERNAME:$USER_PASSWORD | chpasswd"
+}
+fetch_dotfiles(){
+	nixos-enter --root /mnt -c "sudo -Hu $USERNAME git clone https://github.com/dripware/.dotfiles /home/$USERNAME/.dotfiles"
 }
 install_homemanager(){
 	__print "installing home-manager..."
-	nix-shell -p nixUnstable git --run "nix build --no-link $HERE#homeConfigurations.$USERNAME.activationPackage --extra-experimental-features 'nix-command flakes'"
-	"$(nix path-info --extra-experimental-features 'nix-command flakes')"/activate
+	nixos-enter --root /mnt -c "nix-daemon & sudo -Hu $USERNAME nix build --no-link /home/$USERNAME/.dotfiles#homeConfigurations.$USERNAME.activationPackage"
 }
 
 check_root
@@ -179,8 +172,8 @@ format_partitions
 mount_partitions
 generate_system_system_local
 git_add_system_local
-set_tmpdir
 update_flake
 install_nixos
-# install_homemanager
+fetch_dotfiles
+install_homemanager
 git_rm_system_local

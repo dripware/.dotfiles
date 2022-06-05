@@ -89,6 +89,7 @@
   environment.systemPackages = with pkgs; [
     vim 
     wget
+    git
   ];
   fonts.fonts = with pkgs; [
     (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
