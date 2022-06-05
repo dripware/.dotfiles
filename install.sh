@@ -45,7 +45,7 @@ prompt_boolean(){
 	local PROMPT
 	[[ "$1" != "" ]] && PROMPT="$1" || PROMPT="Do you want to proceed" 
 	while : ;do
-		local ANS="$(__prompt "$PROMPT (y/n)?")"
+		local ANS="$(__prompt "$PROMPT (y/n)? ")"
 		if [[ "$ANS" == "y" ]]; then
 			return 0
 		elif [[ "$ANS" == "n" ]]; then
@@ -141,7 +141,7 @@ generate_system_system_local(){
 	EOF
 }
 update_flake(){
-	nix flake update $HERE# --extra-experimental-features 'nix-command flakes'
+	nix flake update "$HERE#" --extra-experimental-features 'nix-command flakes'
 }
 git_add_system_local(){
 	git --git-dir $HERE/.git add $HERE/system_local -f
@@ -149,9 +149,23 @@ git_add_system_local(){
 git_rm_system_local(){
 	git --git-dir $HERE/.git rm $HERE/system_local -rf
 }
+set_tmpdir(){
+	__print "rebuilding live cd nixos configuration with TMPDIR variable for nix build..."
+	[ ! -d /mnt/tmp ] && (mkdir /mnt/tmp; chown -R nixos /mnt/tmp )
+	cat > /mnt/tmp/tmp-config.nix <<- EOF
+		{ config, pkgs, ... }:
+		{
+			imports = [ <nixpkgs/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix> ];
+			nix.envVars.TMPDIR = "/mnt/tmp";
+		}
+	EOF
+	nixos-rebuild switch --fast -p temp -I nixos-config=/mnt/tmp/tmp-config.nix	
+	
+	
+}
 install_nixos(){
 	__print "installing nixos..."
-	nix-shell -p nixUnstable git --run "nix build --extra-experimental-features 'nix-command flakes' .#nixosConfigurations.machine.config.system.build.toplevel --show-trace"
+	sudo -H -u nixos nix-shell -p nixUnstable git --run "nix build --extra-experimental-features 'nix-command flakes' .#nixosConfigurations.machine.config.system.build.toplevel --show-trace"
 	# nixos-install --root /mnt --system "$(nix path-info --extra-experimental-features 'nix-command flakes' "$HERE#nixosConfigurations.$MACHINE_NAME.config.system.build.toplevel")"
 }
 install_homemanager(){
@@ -168,6 +182,7 @@ format_partitions
 mount_partitions
 generate_system_system_local
 git_add_system_local
+set_tmpdir
 update_flake
 install_nixos
 # install_homemanager

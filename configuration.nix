@@ -7,7 +7,7 @@
 {
   imports =
     [ # Include the results of the hardware scan.
-      (system_local.hardware_configuration)
+      (system_local.hardware-configuration)
     ];
   boot.loader.grub = {
     enable = true;
