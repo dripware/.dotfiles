@@ -156,7 +156,7 @@ set_tmpdir(){
 		{ config, pkgs, ... }:
 		{
 			imports = [ <nixpkgs/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix> ];
-			nix.envVars.TMPDIR = "/mnt/tmp";
+			systemd.services.nix-daemon.environment.TMPDIR = "/mnt/tmp";
 		}
 	EOF
 	nixos-rebuild switch --fast -p temp -I nixos-config=/mnt/tmp/tmp-config.nix	
