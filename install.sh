@@ -143,6 +143,12 @@ generate_system_system_local(){
 update_flake(){
 	nix flake update $HERE# --extra-experimental-features 'nix-command flakes'
 }
+git_add_system_local(){
+	git --git-dir $HERE/.git add $HERE/system_local -f
+}
+git_rm_system_local(){
+	git --git-dir $HERE/.git rm $HERE/system_local -rf
+}
 install_nixos(){
 	__print "installing nixos..."
 	nix-shell -p nixUnstable git --run "nix build --extra-experimental-features 'nix-command flakes' .#nixosConfigurations.machine.config.system.build.toplevel --show-trace"
@@ -161,6 +167,8 @@ partition_disk
 format_partitions
 mount_partitions
 generate_system_system_local
+git_add_system_local
 update_flake
 install_nixos
 # install_homemanager
+git_rm_system_local
