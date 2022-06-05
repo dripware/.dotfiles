@@ -141,7 +141,7 @@ generate_system_system_local(){
 	EOF
 }
 update_flake(){
-	nix flake update $HERE#
+	nix flake update $HERE# --extra-experimental-features 'nix-command flakes'
 }
 install_nixos(){
 	__print "installing nixos..."
