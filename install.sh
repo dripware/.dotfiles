@@ -154,14 +154,16 @@ install_nixos(){
 	__print "installing nixos..."
 	nixos-install --flake "$HERE#$MACHINE_NAME" --no-root-password
 	nixos-enter --root /mnt -c "echo root:$ROOT_PASSWORD | chpasswd"
-	nixos-neter --root /mnt -c "echo $USERNAME:$USER_PASSWORD | chpasswd"
+	nixos-enter --root /mnt -c "echo $USERNAME:$USER_PASSWORD | chpasswd"
 }
 fetch_dotfiles(){
 	nixos-enter --root /mnt -c "sudo -Hu $USERNAME git clone https://github.com/dripware/.dotfiles /home/$USERNAME/.dotfiles"
 }
 install_homemanager(){
 	__print "installing home-manager..."
-	nixos-enter --root /mnt -c "nix-daemon & sudo -Hu $USERNAME nix build --no-link /home/$USERNAME/.dotfiles#homeConfigurations.$USERNAME.activationPackage"
+	nixos-enter --root /mnt -c "nix-daemon & sudo -Hu $USERNAME nix build /home/$USERNAME/.dotfiles#homeConfigurations.$USERNAME.activationPackage -o /home/$USERNAME/result"
+	nixos-enter --root /mnt -c "nix-daemon & sudo -Hu $USERNAME /home/$USERNAME/result/activate"
+	nixos-enter --root /mnt -c "rm -rf /home/$USERNAME/result"
 }
 
 check_root
