@@ -159,9 +159,6 @@ set_tmpdir(){
 			systemd.services.nix-daemon.environment.TMPDIR = "/mnt/tmp";
 		}
 	EOF
-	nixos-rebuild switch --fast -p temp -I nixos-config=/mnt/tmp/tmp-config.nix	
-	
-	
 }
 install_nixos(){
 	__print "installing nixos..."
