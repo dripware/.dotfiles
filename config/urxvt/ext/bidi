@@ -94,18 +94,17 @@ correctly, and equation environments be considered a paragraph (so that it is
 displayed on the left).
 
 =cut
-
 use lib '/nix/store/vi6xrg05dg5if9x211x3hdjc4jb833g7-perl-5.34.1-env/lib/perl5/site_perl/5.34.1/x86_64-linux-thread-multi';
 
 use 5.10.0;
-use Text::Bidi qw(log2vis is_bidi);
-use Text::Bidi::Constants;
+use Text::Bidi; qw(log2vis is_bidi);
+use Text::Bidi::Contants;
 use Encode qw(decode_utf8);
 
 sub on_start {
     my ($self) = @_;
     $self->{'split'} = decode_utf8($self->x_resource('%.FieldSep')) // 
-                       "\x{2502}";
+		       "\x{2502}";
     my $lre = decode_utf8($self->x_resource('%.LRE')) // '';
     my $pdf = decode_utf8($self->x_resource('%.PDF')) // '';
     my $preset = decode_utf8($self->x_resource('%.ParReset')) // '^\s*$';
@@ -129,80 +128,80 @@ sub on_refresh_begin {
     my $pdir;
     my $l;
     for my $i ( 0..$self->nrow-1 ) {
-        $l = $self->ROW_t($i);
-        $pdir = undef if $l =~ $self->{'pres'};
-        # for speed
-        next unless is_bidi($l) or 
-            (defined($pdir) and $pdir == $Text::Bidi::Par::RTL);
-        chomp($l);
-        my @r = @{$self->ROW_r($i)};
-        # expand combining chars (Nikud) from one illegal char to two legal
-        $l = $self->special_decode($l);
-        # add bidi marks
-        if ( $self->{'lre'} ) {
-            while ( $l =~ /\G$self->{'lre'}/gc ) {
-                my $p = pos($l);
-                my $j = $p - length($1);
-                substr($l, $j, 0) = "\x{202a}";
-                splice(@r, $j, 0, 0);
-                $ccol++ if $j <= $ccol and $i == $crow;
-                pos($l) = $p + 1;
-            }
-            pos($l) = undef;
-            while ( $l =~ /\G.*?$self->{'pdf'}/gc ) {
-                my $j = pos($l);
-                substr($l, $j, 0) = "\x{202c}";
-                splice(@r, $j, 0, 0);
-                $ccol++ if $j <= $ccol and $i == $crow;
-                pos($l) = $j + 1;
-            }
-        }
-        # nikud
-        while ( $l =~ /[\x{5b0}-\x{5bb}]/g ) {
-            my $j = pos($l) - 1;
-            splice(@r, $j, 0, 0);
-            $ccol++ if $j <= $ccol and $i == $crow;
-        }
-        my @l = split $self->{'spre'}, $l;
-        my (@res, @map);
-        # current offset within the line
-        my $off = 0;
-        # we keep the map, so that we can apply it to the rendition
-        for my $part ( @l ) {
-            my ($p, $v) = log2vis($part, undef, $pdir);
-            my $types = $p->types;
-            #warn "$i: <$part> ==>\n  <$v>\n  dir:" . $p->dir . "\ntype: " .  
-            #join(',', map { my $cc = substr($part, $_, 1); '[' . $cc . ':' .  
-            #sprintf("%x", ord($cc)) . ":" . $types->[$_] . ']' } 
-            #0..$#{$types}) . "\n\n";
-            push @res, $v;
-            my @mmap = @{$p->map};
-            push @map, map { $_ + $off } @mmap;
-            $off += length($v);
-            # compensate for the field separator
-            push @map, $off..$off+$self->{'ls'}-1;
-            $off += $self->{'ls'};
-            $pdir = $p->dir if ( $self->{'par'} and not defined $pdir );
-        }
-        # remove the last field separator
-        splice @map, -$self->{'ls'};
-        my $res = join($self->{'split'}, @res);
-        # remove bidi marks
-        while ( $res =~ /[\x{200b}-\x{200f}\x{202a}-\x{202f}\x{5b0}-\x{5bb}]/g ) {
-            $map[pos($res)-1] = -1;
-        }
-        $res =~ s/[\x{200b}-\x{200f}\x{202a}-\x{202f}]//g;
-        $res = $self->special_encode($res); 
-        # fake cursor
-        if ( $crow == $i ) {
-            $r[$ccol] |= urxvt::RS_RVid unless $map[$ccol]==$ccol;
-        }
-        my @newr = (@r)[grep { $_ >= 0 } @map];
-        # keep the logical data for restoring after display
-        $self->{'text'}[$i] = $self->ROW_t($i, $res);
-        $self->{'rend'}[$i] = $self->ROW_r($i, \@newr);
+	$l = $self->ROW_t($i);
+	$pdir = undef if $l =~ $self->{'pres'};
+	# for speed
+	next unless is_bidi($l) or 
+	    (defined($pdir) and $pdir == $Text::Bidi::Par::RTL);
+	chomp($l);
+	my @r = @{$self->ROW_r($i)};
+	# expand combining chars (Nikud) from one illegal char to two legal
+	$l = $self->special_decode($l);
+	# add bidi marks
+	if ( $self->{'lre'} ) {
+	    while ( $l =~ /\G$self->{'lre'}/gc ) {
+		my $p = pos($l);
+		my $j = $p - length($1);
+		substr($l, $j, 0) = "\x{202a}";
+		splice(@r, $j, 0, 0);
+		$ccol++ if $j <= $ccol and $i == $crow;
+		pos($l) = $p + 1;
+	    }
+	    pos($l) = undef;
+	    while ( $l =~ /\G.*?$self->{'pdf'}/gc ) {
+		my $j = pos($l);
+		substr($l, $j, 0) = "\x{202c}";
+		splice(@r, $j, 0, 0);
+		$ccol++ if $j <= $ccol and $i == $crow;
+		pos($l) = $j + 1;
+	    }
+	}
+	# nikud
+	while ( $l =~ /[\x{5b0}-\x{5bb}]/g ) {
+	    my $j = pos($l) - 1;
+	    splice(@r, $j, 0, 0);
+	    $ccol++ if $j <= $ccol and $i == $crow;
+	}
+	my @l = split $self->{'spre'}, $l;
+	my (@res, @map);
+	# current offset within the line
+	my $off = 0;
+	# we keep the map, so that we can apply it to the rendition
+	for my $part ( @l ) {
+	    my ($p, $v) = log2vis($part, undef, $pdir);
+	    my $types = $p->types;
+	    #warn "$i: <$part> ==>\n  <$v>\n  dir:" . $p->dir . "\ntype: " .  
+	    #join(',', map { my $cc = substr($part, $_, 1); '[' . $cc . ':' .  
+	    #sprintf("%x", ord($cc)) . ":" . $types->[$_] . ']' } 
+	    #0..$#{$types}) . "\n\n";
+	    push @res, $v;
+	    my @mmap = @{$p->map};
+	    push @map, map { $_ + $off } @mmap;
+	    $off += length($v);
+	    # compensate for the field separator
+	    push @map, $off..$off+$self->{'ls'}-1;
+	    $off += $self->{'ls'};
+	    $pdir = $p->dir if ( $self->{'par'} and not defined $pdir );
+	}
+	# remove the last field separator
+	splice @map, -$self->{'ls'};
+	my $res = join($self->{'split'}, @res);
+	# remove bidi marks
+	while ( $res =~ /[\x{200b}-\x{200f}\x{202a}-\x{202f}\x{5b0}-\x{5bb}]/g ) {
+	    $map[pos($res)-1] = -1;
+	}
+	$res =~ s/[\x{200b}-\x{200f}\x{202a}-\x{202f}]//g;
+	$res = $self->special_encode($res); 
+	# fake cursor
+	if ( $crow == $i ) {
+	    $r[$ccol] |= urxvt::RS_RVid unless $map[$ccol]==$ccol;
+	}
+	my @newr = (@r)[grep { $_ >= 0 } @map];
+	# keep the logical data for restoring after display
+	$self->{'text'}[$i] = $self->ROW_t($i, $res);
+	$self->{'rend'}[$i] = $self->ROW_r($i, \@newr);
     } continue {
-        $pdir = undef if $l =~ $self->{'presa'};
+	$pdir = undef if $l =~ $self->{'presa'};
     }
     ()
 }
@@ -211,12 +210,11 @@ sub on_refresh_end {
     my ($self) = @_;
     return unless defined $self->{'text'};
     foreach (0..$self->nrow-1 ) {
-        next unless defined $self->{'text'}[$_];
-        $self->ROW_t($_, $self->{'text'}[$_]);
-        $self->ROW_r($_, $self->{'rend'}[$_]);
+	next unless defined $self->{'text'}[$_];
+	$self->ROW_t($_, $self->{'text'}[$_]);
+	$self->ROW_r($_, $self->{'rend'}[$_]);
     }
     delete $self->{'text'};
     delete $self->{'rend'};
     ()
 }
-

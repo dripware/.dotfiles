@@ -25,7 +25,13 @@
     ".local/bin" = { # custom scripts
       source = ./bin;
     };
+    ".Xresources" = { # urxvt config
+      source = ./config/Xresources;
+      onChange = "xrdb -merge ~/.Xresources";
+    };
+    ".urxvt/ext" = { # urxvt extensions
+      source = ./config/urxvt/ext;
+    };
   };
-  programs.urxvt = import ./config/urxvt;
   programs.zsh = import ./config/zsh.nix;
 }
