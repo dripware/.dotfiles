@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# tracking system_local after commit because system_local is required to be tracked by nix
+git --git-dir=$HOME/.dotfiles/.git rm $HOME/.dotfiles/system_local -r 

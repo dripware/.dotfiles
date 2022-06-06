@@ -139,6 +139,7 @@ generate_system_system_local(){
           };
         }
 	EOF
+	chmod +rw $HERE/system_local $HERE/system_local/*
 }
 update_flake(){
 	__print "updating nix flake..."
@@ -147,17 +148,18 @@ update_flake(){
 git_add_system_local(){
 	git --git-dir $HERE/.git add $HERE/system_local -f
 }
-git_rm_system_local(){
-	git --git-dir $HERE/.git rm $HERE/system_local -rf
-}
 install_nixos(){
 	__print "installing nixos..."
 	nixos-install --flake "$HERE#$MACHINE_NAME" --no-root-password
 	nixos-enter --root /mnt -c "echo root:$ROOT_PASSWORD | chpasswd"
 	nixos-enter --root /mnt -c "echo $USERNAME:$USER_PASSWORD | chpasswd"
 }
+
 fetch_dotfiles(){
 	nixos-enter --root /mnt -c "sudo -Hu $USERNAME git clone https://github.com/dripware/.dotfiles /home/$USERNAME/.dotfiles"
+	cp $HERE/system_local /mnt/home/$USERNAME/.dotfiles -r
+	rm -rf /mnt/home/$USERNAME/.dotfiles/.git/hooks
+	ln /mnt/home/$USERNAME/.dotfiles/.githooks /mnt/home/$USERNAME/.dotfiles/.git/hooks
 }
 install_homemanager(){
 	__print "installing home-manager..."
@@ -178,4 +180,3 @@ update_flake
 install_nixos
 fetch_dotfiles
 install_homemanager
-git_rm_system_local

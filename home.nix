@@ -27,4 +27,5 @@
     };
   };
   programs.urxvt = import ./config/urxvt;
+  programs.zsh = import ./config/zsh.nix;
 }
