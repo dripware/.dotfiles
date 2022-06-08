@@ -1,3 +1,6 @@
 #!/usr/bin/env bash
 # avoid committing system_local to git because system_local is required to be tracked by nix
-git --git-dir=$HOME/.dotfiles/.git rm $HOME/.dotfiles/system_local -rf
+echo "temporarly untracking ./system_local"
+if git ls-files --error-unmatch ./system_local >> /dev/null; then
+	git rm ./system_local -rf --cached
+fi
