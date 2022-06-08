@@ -136,6 +136,8 @@ generate_system_system_local(){
 	  outputs = { self, nixpkgs }: {
 	    disk = "$DISK";
 	    hardware-configuration = import ./hardware-configuration.nix;
+	    configuration = "$MACHINE_NAME";
+	    username = "$USERNAME";
           };
         }
 	EOF

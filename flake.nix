@@ -12,16 +12,16 @@
   outputs = { self, nixpkgs, home-manager, system_local }@inputs:
     let 
       system = "x86_64-linux";
-      username = "dripware";
+      username = system_local.username;
     in {
-      nixosConfigurations.machine = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.main = nixpkgs.lib.nixosSystem {
         inherit system;
 	specialArgs = { inherit system_local; };
-        modules = [ ./configuration.nix ];
+        modules = [ ./configuration/${system_local.configuration}.nix ];
       };
-      homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
+      homeConfigurations.main = home-manager.lib.homeManagerConfiguration {
         inherit system username;
-        configuration = import ./home.nix;
+        configuration = import ./home/${username}.nix;
         homeDirectory = "/home/${username}";
         stateVersion = "21.11";
       };

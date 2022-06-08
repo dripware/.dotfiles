@@ -44,16 +44,6 @@
   services.xserver.windowManager.qtile.enable = true;
   services.urxvtd.enable = true;
 
-  services.picom = {
-    enable = true;
-    fade   = true;
-    experimentalBackends = true;
-    backend = "glx";
-    vSync = true;
-    settings = {
-      fade-delta = 3;
-    };
-  };
   services.cron = {
     enable = true;
     systemCronJobs = [

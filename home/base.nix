@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs,... }:{
   programs.home-manager.enable = true;
 
   home.packages = with pkgs; [
@@ -18,20 +18,21 @@
     hyperfine
     nix-generate-from-cpan
     rxvt_unicode
+    tmux
+    nixos-option
     (perl.withPackages(ps: [ ps.Appcpanminus ]))
   ];
-
   home.file = {
     ".local/bin" = { # custom scripts
-      source = ./bin;
+      source = ../bin;
     };
     ".Xresources" = { # urxvt config
-      source = ./config/Xresources;
+      source = ../config/Xresources;
       onChange = "xrdb -merge ~/.Xresources";
     };
     ".urxvt/ext" = { # urxvt extensions
-      source = ./config/urxvt/ext;
+      source = ../config/urxvt/ext;
     };
   };
-  programs.zsh = import ./config/zsh.nix;
+  programs.zsh = import ../config/zsh.nix;
 }
