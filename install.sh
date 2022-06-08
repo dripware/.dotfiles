@@ -152,7 +152,7 @@ git_add_system_local(){
 }
 install_nixos(){
 	__print "installing nixos..."
-	nixos-install --flake "$HERE#$MACHINE_NAME" --no-root-password
+	nixos-install --flake "$HERE#main" --no-root-password
 	nixos-enter --root /mnt -c "echo root:$ROOT_PASSWORD | chpasswd"
 	nixos-enter --root /mnt -c "echo $USERNAME:$USER_PASSWORD | chpasswd"
 }
@@ -170,7 +170,7 @@ copy_dotfiles(){
 }
 install_homemanager(){
 	__print "installing home-manager..."
-	nixos-enter --root /mnt -c "nix-daemon & sudo -Hu $USERNAME nix build /home/$USERNAME/.dotfiles#homeConfigurations.$USERNAME.activationPackage -o /home/$USERNAME/result"
+	nixos-enter --root /mnt -c "nix-daemon & sudo -Hu $USERNAME nix build /home/$USERNAME/.dotfiles#homeConfigurations.main.activationPackage -o /home/$USERNAME/result"
 	nixos-enter --root /mnt -c "nix-daemon & sudo -Hu $USERNAME /home/$USERNAME/result/activate"
 	rm /mnt/home/$USERNAME/result
 }
