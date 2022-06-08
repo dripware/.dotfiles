@@ -179,5 +179,5 @@ generate_system_system_local
 git_add_system_local
 update_flake
 install_nixos
-fetch_dotfiles
+copy_dotfiles
 install_homemanager
