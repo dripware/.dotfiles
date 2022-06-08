@@ -157,7 +157,7 @@ install_nixos(){
 	nixos-enter --root /mnt -c "echo $USERNAME:$USER_PASSWORD | chpasswd"
 }
 
-fetch_dotfiles(){
+copy_dotfiles(){
 	__print "copying dotfiles to newly installed nixos..."
 	cp $HERE /mnt/home/$USERNAME/tmp_repo -r
 	nixos-enter --root /mnt -c "sudo -Hu $USERNAME git clone /home/$USERNAME/tmp_repo /home/$USERNAME/.dotfiles"
@@ -165,24 +165,25 @@ fetch_dotfiles(){
 	nixos-enter --root /mnt -c "chown $USERNAME /home/$USERNAME/tmp_repo/system_local -R"
 	nixos-enter --root /mnt -c "sudo -Hu $USERNAME cp /home/$USERNAME/tmp_repo/system_local /home/$USERNAME/.dotfiles/system_local -r"
 	nixos-enter --root /mnt -c "sudo -Hu $USERNAME ln /home/$USERNAME/.dotfiles/.githooks /home/$USERNAME/.dotfiles/.git/hooks -s"
-	nixos-enter --root "rm -rf /home/$USERNAME/tmp_repo"
+	nixos-enter --root /mnt -c "git --git-dir /home/$USERNAME/.dotfiles remote set-url origin git@github.com:dripware/.dotfiles"
+	rm -rf /mnt/home/$USERNAME/tmp_repo
 }
 install_homemanager(){
 	__print "installing home-manager..."
 	nixos-enter --root /mnt -c "nix-daemon & sudo -Hu $USERNAME nix build /home/$USERNAME/.dotfiles#homeConfigurations.$USERNAME.activationPackage -o /home/$USERNAME/result"
 	nixos-enter --root /mnt -c "nix-daemon & sudo -Hu $USERNAME /home/$USERNAME/result/activate"
-	nixos-enter --root /mnt -c "rm -rf /home/$USERNAME/result"
+	rm /mnt/home/$USERNAME/result
 }
 
-# check_root
+check_root
 ask_for_inputs
-# clean_before_install
-# partition_disk
-# format_partitions
-# mount_partitions
-# generate_system_system_local
-# git_add_system_local
-# update_flake
-# install_nixos
-fetch_dotfiles
+clean_before_install
+partition_disk
+format_partitions
+mount_partitions
+generate_system_system_local
+git_add_system_local
+update_flake
+install_nixos
+copy_dotfiles
 install_homemanager
