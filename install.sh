@@ -159,14 +159,11 @@ fetch_dotfiles(){
 	__print "copying dotfiles to newly installed nixos..."
 	cp $HERE /mnt/home/$USERNAME/tmp_repo -r
 	nixos-enter --root /mnt -c "sudo -Hu $USERNAME git clone /home/$USERNAME/tmp_repo /home/$USERNAME/.dotfiles"
-<<<<<<< HEAD
-	nixos-enter --root "rm -rf /home/$USERNAME/tmp_repo"
-=======
->>>>>>> 02bcc3d (finish fixing install.sh (hopefully))
 	rm -rf /mnt/home/$USERNAME/.dotfiles/.git/hooks
 	nixos-enter --root /mnt -c "chown $USERNAME /home/$USERNAME/tmp_repo/system_local -R"
 	nixos-enter --root /mnt -c "sudo -Hu $USERNAME cp /home/$USERNAME/tmp_repo/system_local /home/$USERNAME/.dotfiles/system_local -r"
 	nixos-enter --root /mnt -c "sudo -Hu $USERNAME ln /home/$USERNAME/.dotfiles/.githooks /home/$USERNAME/.dotfiles/.git/hooks -s"
+	nixos-enter --root "rm -rf /home/$USERNAME/tmp_repo"
 }
 install_homemanager(){
 	__print "installing home-manager..."
