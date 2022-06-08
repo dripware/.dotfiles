@@ -145,7 +145,7 @@ generate_system_system_local(){
 }
 update_flake(){
 	__print "updating nix flake..."
-	nix flake update "$HERE#" --extra-experimental-features 'nix-command flakes'
+	nix flake lock --update-input system_local "$HERE#" --extra-experimental-features 'nix-command flakes'
 }
 git_add_system_local(){
 	git --git-dir $HERE/.git add $HERE/system_local -f
@@ -165,7 +165,7 @@ copy_dotfiles(){
 	nixos-enter --root /mnt -c "chown $USERNAME /home/$USERNAME/tmp_repo/system_local -R"
 	nixos-enter --root /mnt -c "sudo -Hu $USERNAME cp /home/$USERNAME/tmp_repo/system_local /home/$USERNAME/.dotfiles/system_local -r"
 	nixos-enter --root /mnt -c "sudo -Hu $USERNAME ln /home/$USERNAME/.dotfiles/.githooks /home/$USERNAME/.dotfiles/.git/hooks -s"
-	nixos-enter --root /mnt -c "git --git-dir /home/$USERNAME/.dotfiles remote set-url origin git@github.com:dripware/.dotfiles"
+	nixos-enter --root /mnt -c "git --git-dir /home/$USERNAME/.dotfiles/.git remote set-url origin git@github.com:dripware/.dotfiles"
 	rm -rf /mnt/home/$USERNAME/tmp_repo
 }
 install_homemanager(){
