@@ -155,12 +155,12 @@ install_nixos(){
 	nixos-enter --root /mnt -c "echo $USERNAME:$USER_PASSWORD | chpasswd"
 }
 
-copy_dotfiles(){
+fetch_dotfiles(){
 	__print "copying dotfiles to newly installed nixos..."
-	cp $HERE /mnt/home/$USERNAME/.dotfiles -r
+	cp $HERE /mnt/home/$USERNAME/tmp_repo -r
+	nixos-enter --root /mnt -c "git clone /home/$USERNAME/tmp_repo /home/$USERNAME/.dotfiles && rm -rf /home/$USERNAME/tmp_repo"
 	rm -rf /mnt/home/$USERNAME/.dotfiles/.git/hooks
-	ln /mnt/home/$USERNAME/.dotfiles/.githooks /mnt/home/$USERNAME/.dotfiles/.git/hooks -s
-	nixos-enter --root /mnt -c "chown -R $USERNAME /home/$USERNAME/.dotfiles"
+	nixos-enter --root /mnt -c "ln /home/$USERNAME/.dotfiles/.githooks /home/$USERNAME/.dotfiles/.git/hooks -s"
 }
 install_homemanager(){
 	__print "installing home-manager..."
@@ -179,5 +179,5 @@ generate_system_system_local
 git_add_system_local
 update_flake
 install_nixos
-copy_dotfiles
+fetch_dotfiles
 install_homemanager
