@@ -160,7 +160,7 @@ copy_dotfiles(){
 	cp $HERE /mnt/home/$USERNAME/.dotfiles -r
 	rm -rf /mnt/home/$USERNAME/.dotfiles/.git/hooks
 	ln /mnt/home/$USERNAME/.dotfiles/.githooks /mnt/home/$USERNAME/.dotfiles/.git/hooks -s
-	nixos-enter --root /mnt -c "chown -R $USERNAME /mnt/home/$USERNAME/.dotfiles/**/*.*"
+	nixos-enter --root /mnt -c "chown -R $USERNAME /home/$USERNAME/.dotfiles"
 }
 install_homemanager(){
 	__print "installing home-manager..."
