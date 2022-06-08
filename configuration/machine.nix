@@ -5,7 +5,7 @@
     fade   = true;
     experimentalBackends = true;
     backend = "glx";
-    vsync = true;
+    vSync = true;
     settings = {
       fade-delta = 3;
     };
