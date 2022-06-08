@@ -158,7 +158,8 @@ install_nixos(){
 fetch_dotfiles(){
 	__print "copying dotfiles to newly installed nixos..."
 	cp $HERE /mnt/home/$USERNAME/tmp_repo -r
-	nixos-enter --root /mnt -c "git clone /home/$USERNAME/tmp_repo /home/$USERNAME/.dotfiles && rm -rf /home/$USERNAME/tmp_repo"
+	nixos-enter --root /mnt -c "sudo -Hu $USERNAME git clone /home/$USERNAME/tmp_repo /home/$USERNAME/.dotfiles"
+	nixos-enter --root "rm -rf /home/$USERNAME/tmp_repo"
 	rm -rf /mnt/home/$USERNAME/.dotfiles/.git/hooks
 	nixos-enter --root /mnt -c "ln /home/$USERNAME/.dotfiles/.githooks /home/$USERNAME/.dotfiles/.git/hooks -s"
 }
