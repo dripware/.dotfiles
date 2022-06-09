@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # tracking system_local after commit because system_local is required to be tracked by nix
 echo "adding ./local_config back..."
-if ! git ls-files --error-unmatch local_config >> /dev/null; then
+if ! git ls-files --error-unmatch local_config &>/dev/null; then
 	git add local_config -f
 fi
