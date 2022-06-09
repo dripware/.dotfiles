@@ -1,0 +1,6 @@
+[Unit]
+Description=Dynamically change wallpaper
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/dynamite-update

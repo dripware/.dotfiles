@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 MORNING_TIME=600
 DAY_TIME=1300
 EVENING_TIME=2000
@@ -7,13 +8,9 @@ MORNING_WEIGHT=0
 DAY_WEIGHT=1.2
 EVENING_WEIGHT=0
 NIGHT_WEIGHT=1.4
-OUTDIR=~/.dotfiles/wallpapers/out
+OUTDIR=~/.cache/dynamite/out
 
 STEP=2
-
-ensure_exists(){
-	
-}
 
 neg(){
 	if (( $2 < $1 )); then

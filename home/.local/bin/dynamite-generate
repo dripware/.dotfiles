@@ -3,12 +3,14 @@ LEN=100
 STEP=2
 TOTAL=$(( $LEN / $STEP * 4))
 
-SOURCEDIR=~/.dotfiles/wallpapers/source
-OUTDIR=~/.dotfiles/wallpapers/out
+SOURCEDIR=~/.local/dynamite/bg
+OUTDIR=~/.cache/dynamite/out
 MORNING=$SOURCEDIR/morning.jpg
 DAY=$SOURCEDIR/day.jpg
 EVENING=$SOURCEDIR/evening.jpg
 NIGHT=$SOURCEDIR/night.jpg
+
+mkdir $OUTDIR -p
 
 update_progress(){
 	echo -ne "\033[2K\rGenerating Wallpapers... $(( ( $(ls $OUTDIR -l | wc -l ) -1 ) * 100 / $TOTAL ))%" >&2
