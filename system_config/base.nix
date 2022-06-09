@@ -41,6 +41,7 @@
   # Enable the X11 windowing system.
   services.xserver.enable = true;
   services.xserver.displayManager.sddm.enable = true;
+  services.xserver.displayManager.startx.enable = true;
   services.xserver.windowManager.qtile.enable = true;
   services.urxvtd.enable = true;
 
@@ -81,6 +82,10 @@
   ];
   environment.localBinInPath = true;
   environment.pathsToLink = [ "/share/zsh" ];
+
+  systemd.user.extraConfig = ''
+    DefaultEnvironment="PATH=/home/${local_config.username}/.nix-profile/bin:/run/current-system/sw/bin"
+  '';
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

@@ -12,7 +12,6 @@
     gimp
     htop
     ncdu
-    git
     wezterm
     tree
     hyperfine

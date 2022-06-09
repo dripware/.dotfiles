@@ -3,7 +3,7 @@ Description=Dynamite Interval
 
 [Timer]
 OnUnitActiveSec=5min
-OnBootSec=1s
+OnBootSec=5min
 
 [Install]
 WantedBy=timers.target
