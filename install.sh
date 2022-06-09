@@ -194,6 +194,10 @@ install_homemanager(){
 	nixos-enter --root /mnt -c "nix-daemon & sudo -Hu $USERNAME /home/$USERNAME/result/activate"
 	rm /mnt/home/$USERNAME/result
 }
+generate_wallpaper(){
+	__print "generate dynamite wallpapers..."
+	nixos-enter --root /mnt -c "~/.local/bin/dynamite-generate"
+}
 
 check_root
 ask_for_inputs
@@ -207,3 +211,4 @@ update_flake
 install_nixos
 copy_dotfiles
 install_homemanager
+generate_wallpaper

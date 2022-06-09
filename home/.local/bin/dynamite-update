@@ -12,6 +12,12 @@ OUTDIR=~/.cache/dynamite/out
 
 STEP=2
 
+ensure_exists(){
+	if [ ! -z $OUTDIR ]; then
+		echo "wallpapers are not generated. generating them now..."
+		dynamite-generate
+	fi
+}
 neg(){
 	if (( $2 < $1 )); then
 		echo $(( 2400 + $2 - $1))
@@ -65,6 +71,8 @@ set_wallpaper(){
 	echo "$(date '+%D +%H:+%M') $FILENAME" >> /tmp/dynamite-log
 }
 
+
+ensure_exists
 
 if is_between $MORNING_TIME $DAY_TIME; then # it's morning
 	set_wallpaper $MORNING_TIME $DAY_TIME morning $MORNING_WEIGHT
