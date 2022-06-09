@@ -22,17 +22,10 @@
     nixos-option
     (perl.withPackages(ps: [ ps.Appcpanminus ]))
   ];
-  home.file = {
-    ".local/bin" = { # custom scripts
-      source = ../bin;
-    };
-    ".Xresources" = { # urxvt config
-      source = ../config/Xresources;
-      onChange = "xrdb -merge ~/.Xresources";
-    };
-    ".urxvt/ext" = { # urxvt extensions
-      source = ../config/urxvt/ext;
-    };
-  };
-  programs.zsh = import ../config/zsh.nix;
+  home.file = with builtins; 
+    let
+      dirs = attrNames (readDir ../home);
+      arr  = map (name: {inherit name; value = { source = ../home + "/${name}"; recursive = true; };}) dirs;
+    in
+      listToAttrs arr;
 }

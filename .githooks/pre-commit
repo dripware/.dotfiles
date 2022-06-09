@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # avoid committing system_local to git because system_local is required to be tracked by nix
-echo "temporarly untracking ./system_local"
-if git ls-files --error-unmatch ./system_local >> /dev/null; then
-	git rm ./system_local -rf --cached
+echo "temporarly untracking ./local_config"
+if git ls-files --error-unmatch ./local_config >> /dev/null; then
+	git rm ./local_config -rf --cached
 fi

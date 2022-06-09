@@ -7,21 +7,28 @@
       url = github:nix-community/home-manager;
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    system_local.url = "path:./system_local";
+
+    # local config flake contains bunch of information about this specific
+    # installation of nixos. it's generated automatically by install.sh
+    # it also contains hardware-configuration.nix
+    local_config.url = "path:./local_config";
   };
-  outputs = { self, nixpkgs, home-manager, system_local }@inputs:
+  outputs = { self, nixpkgs, home-manager, local_config }@inputs:
     let 
       system = "x86_64-linux";
-      username = system_local.username;
+      username = local_config.username;
     in {
+      # configuration are named "main" because the specific configuration for each user
+      # is dynamically loaded by local_config.user_config and local_config.system_config
+      # that makes adding new configurations easier
       nixosConfigurations.main = nixpkgs.lib.nixosSystem {
         inherit system;
-	specialArgs = { inherit system_local; };
-        modules = [ ./configuration/${system_local.configuration}.nix ];
+	specialArgs = { inherit local_config; };
+        modules = [ ./system_config/${local_config.system_config}.nix ];
       };
       homeConfigurations.main = home-manager.lib.homeManagerConfiguration {
         inherit system username;
-        configuration = import ./home/${username}.nix;
+        configuration = import ./user_config/${local_config.user_config}.nix;
         homeDirectory = "/home/${username}";
         stateVersion = "21.11";
       };

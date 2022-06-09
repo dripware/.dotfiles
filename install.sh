@@ -70,16 +70,32 @@ ask_for_password(){
 	done
 }
 ask_for_username(){
-	__prompt "Enter username (must match username in home-manager config): "
+	__prompt "Enter username: "
 }
 ask_for_machine_name(){
-	__prompt "Enter name for computer (must match name in nixos config): "
+	__prompt "Enter name for computer: "
+}
+ask_for_system_config(){
+	__print "Avaliable system configs:"
+	for i in $(ls $HERE/system_config -I base.nix); do
+		__print -e "\t- $i"
+	done
+	__prompt "Enter system configuration profile you want to use"
+}
+ask_for_user_config(){
+	__print "Avaliable user configs:"
+	for i in $(ls $HERE/user_config -I base.nix); do
+		__print -e "\t- $i"
+	done
+	__prompt "Enter user configuration profile you want to use"
 }
 ask_for_inputs(){
 	DISK="$(ask_for_disk)"
 	SWAP_SIZE="$(ask_for_swap_size)"
 	MACHINE_NAME="$(ask_for_machine_name)"
 	USERNAME="$(ask_for_username)"
+	SYSTEM_CONFIG="$(ask_for_system_config)"
+	USER_CONFIG="$(ask_for_user_config)"
 	ROOT_PASSWORD="$(ask_for_password "Enter root password")"
 
 	if prompt_boolean "same password for $USERNAME"; then
@@ -93,7 +109,7 @@ clean_before_install(){
 	swapoff -a
 	MOUNTED="$(mount | grep $DISK | awk '{print $1}')"
 	for i in $MOUNTED; do umount $i; done
-	rm -rf $HERE/system_local
+	rm -rf $HERE/local_config
 }
 __parted(){
 	parted "$DISK" -s -- $@
@@ -123,32 +139,34 @@ mount_partitions(){
 __generate_hardware_config(){
 	__print "generating hardware-configuration..."
 	nixos-generate-config --root /mnt
-	cp /mnt/etc/nixos/hardware-configuration.nix "$HERE"/system_local
+	cp /mnt/etc/nixos/hardware-configuration.nix "$HERE"/local_config
 	rm /mnt/etc/nixos/*
 }
-generate_system_system_local(){
-	__print "generating system_local flake..."
-	mkdir $HERE/system_local
+generate_system_local_config(){
+	__print "generating local_config flake..."
+	mkdir $HERE/local_config
 	__generate_hardware_config
-	cat > $HERE/system_local/flake.nix <<- EOF
+	cat > $HERE/local_config/flake.nix <<- EOF
 	{
-	  description = "local flake only used to keep some extra variable for this nixos install";
+	  description = "local flake only used to keep some extra variable for this specific nixos install. it's generated automatically by the install script";
 	  outputs = { self, nixpkgs }: {
 	    disk = "$DISK";
 	    hardware-configuration = import ./hardware-configuration.nix;
-	    configuration = "$MACHINE_NAME";
+	    machine_name = "$MACHINE_NAME";
+            user_config = "$USER_CONFIG";
+	    system_config = "$SYSTEM_CONFIG";
 	    username = "$USERNAME";
           };
         }
 	EOF
-	chmod +rw $HERE/system_local $HERE/system_local/*
+	chmod +rw $HERE/local_config $HERE/local_config/*
 }
 update_flake(){
 	__print "updating nix flake..."
-	nix flake lock --update-input system_local "$HERE#" --extra-experimental-features 'nix-command flakes'
+	nix flake lock --update-input local_config "$HERE#" --extra-experimental-features 'nix-command flakes'
 }
-git_add_system_local(){
-	git --git-dir $HERE/.git add $HERE/system_local -f
+git_add_local_config(){
+	git --git-dir $HERE/.git add $HERE/local_config -f
 }
 install_nixos(){
 	__print "installing nixos..."
@@ -162,12 +180,12 @@ copy_dotfiles(){
 	cp $HERE /mnt/home/$USERNAME/tmp_repo -r
 	nixos-enter --root /mnt -c "sudo -Hu $USERNAME git clone /home/$USERNAME/tmp_repo /home/$USERNAME/.dotfiles"
 	rm -rf /mnt/home/$USERNAME/.dotfiles/.git/hooks
-	nixos-enter --root /mnt -c "chown $USERNAME /home/$USERNAME/tmp_repo/system_local -R"
-	nixos-enter --root /mnt -c "sudo -Hu $USERNAME cp /home/$USERNAME/tmp_repo/system_local /home/$USERNAME/.dotfiles/system_local -r"
+	nixos-enter --root /mnt -c "chown $USERNAME /home/$USERNAME/tmp_repo/local_config -R"
+	nixos-enter --root /mnt -c "sudo -Hu $USERNAME cp /home/$USERNAME/tmp_repo/local_config /home/$USERNAME/.dotfiles/local_config -r"
 	nixos-enter --root /mnt -c "sudo -Hu $USERNAME ln /home/$USERNAME/.dotfiles/.githooks /home/$USERNAME/.dotfiles/.git/hooks -s"
 	nixos-enter --root /mnt -c "sudo -Hu $USERNAME git --git-dir=/home/$USERNAME/.dotfiles/.git remote set-url origin git@github.com:dripware/.dotfiles"
-	nixos-enter --root /mnt -c "sudo -Hu $USERNAME git --git-dir=/home/$USERNAME/.dotfiles/.git --work-tree=/home/$USERNAME/.dotfiles add /home/$USERNAME/.dotfiles/system_local -f"
-	nixos-enter --root /mnt -c "nix-daemon & sudo -Hu $USERNAME nix flake lock --update-input system_local /home/$USERNAME/.dotfiles"
+	nixos-enter --root /mnt -c "sudo -Hu $USERNAME git --git-dir=/home/$USERNAME/.dotfiles/.git --work-tree=/home/$USERNAME/.dotfiles add /home/$USERNAME/.dotfiles/local_config -f"
+	nixos-enter --root /mnt -c "nix-daemon & sudo -Hu $USERNAME nix flake lock --update-input local_config /home/$USERNAME/.dotfiles"
 	rm -rf /mnt/home/$USERNAME/tmp_repo
 }
 install_homemanager(){
@@ -183,8 +201,8 @@ clean_before_install
 partition_disk
 format_partitions
 mount_partitions
-generate_system_system_local
-git_add_system_local
+generate_system_local_config
+git_add_local_config
 update_flake
 install_nixos
 copy_dotfiles

@@ -11,6 +11,10 @@ OUTDIR=~/.dotfiles/wallpapers/out
 
 STEP=2
 
+ensure_exists(){
+	
+}
+
 neg(){
 	if (( $2 < $1 )); then
 		echo $(( 2400 + $2 - $1))

@@ -2,23 +2,23 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, system_local, ... }:
+{ config, pkgs, local_config, ... }:
 
 {
   imports =
     [ # Include the results of the hardware scan.
-      (system_local.hardware-configuration)
+      (local_config.hardware-configuration)
     ];
   boot.loader.grub = {
     enable = true;
     version = 2;
-    device = system_local.disk;
+    device = local_config.disk;
   };
 
 
   nix.extraOptions = "experimental-features = nix-command flakes";
 
-  networking.hostName = "machine"; # Define your hostname.
+  networking.hostName = local_config.machinename; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
@@ -44,13 +44,6 @@
   services.xserver.windowManager.qtile.enable = true;
   services.urxvtd.enable = true;
 
-  services.cron = {
-    enable = true;
-    systemCronJobs = [
-      "*/5 * * * *	dripware	dynamite-update"
-    ];
-  };
-
 
   
 
@@ -69,7 +62,7 @@
   services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.dripware = {
+  users.users."${local_config.username}" = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
   };
@@ -86,7 +79,6 @@
     vazir-fonts
     vazir-code-font
   ];
-  environment.loginShellInit = "dynamite-update";
   environment.localBinInPath = true;
   environment.pathsToLink = [ "/share/zsh" ];
 

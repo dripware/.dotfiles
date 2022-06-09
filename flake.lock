@@ -40,7 +40,36 @@
         "type": "github"
       }
     },
+    "local_config": {
+      "inputs": {
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1,
+        "narHash": "sha256-uP/ejfVRZ/XCxnyGc4hVF5MyyTxr4XGvPBtcMcKsSqY=",
+        "path": "./local_config",
+        "type": "path"
+      },
+      "original": {
+        "path": "./local_config",
+        "type": "path"
+      }
+    },
     "nixpkgs": {
+      "locked": {
+        "lastModified": 1654665288,
+        "narHash": "sha256-7blJpfoZEu7GKb84uh3io/5eSJNdaagXD9d15P9iQMs=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "43ecbe7840d155fa933ee8a500fb00dbbc651fc8",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      }
+    },
+    "nixpkgs_2": {
       "locked": {
         "lastModified": 1654593855,
         "narHash": "sha256-c+SyXvj7THre87OyIdZfRVR+HhI/g1ZDrQ3VUtTuHkU=",
@@ -52,20 +81,6 @@
       "original": {
         "id": "nixpkgs",
         "ref": "nixos-unstable",
-        "type": "indirect"
-      }
-    },
-    "nixpkgs_2": {
-      "locked": {
-        "lastModified": 1654665288,
-        "narHash": "sha256-7blJpfoZEu7GKb84uh3io/5eSJNdaagXD9d15P9iQMs=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "43ecbe7840d155fa933ee8a500fb00dbbc651fc8",
-        "type": "github"
-      },
-      "original": {
-        "id": "nixpkgs",
         "type": "indirect"
       }
     },
@@ -104,23 +119,8 @@
     "root": {
       "inputs": {
         "home-manager": "home-manager",
-        "nixpkgs": "nixpkgs",
-        "system_local": "system_local"
-      }
-    },
-    "system_local": {
-      "inputs": {
+        "local_config": "local_config",
         "nixpkgs": "nixpkgs_2"
-      },
-      "locked": {
-        "lastModified": 1,
-        "narHash": "sha256-yR/aak/UhAllu37t/mGwc/Aa1XUnWbhomynC6y4L6wc=",
-        "path": "./system_local",
-        "type": "path"
-      },
-      "original": {
-        "path": "./system_local",
-        "type": "path"
       }
     },
     "utils": {
