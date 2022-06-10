@@ -40,15 +40,15 @@
 
 ! Text
 !----------------------------------
-URxvt*font:              xft:JetBrains Mono:size=11:antialias=true:hinting=true,\
-                         xft:Vazir Code WOL:size=12:antialias=true:hinting=true,\
-			 xft:JetBrainsMono Nerd Font Mono:size=11:antialias=true:hinting=true,\
-                         xft:Noto Color Emoji:size=9,\
+URxvt*font:              xft:JetBrains Mono:pixelsize=14:antialias=true:hinting=true,\
+                         xft:Vazir Code WOL:pixelsize=16:antialias=true:hinting=true,\
+			 xft:JetBrainsMono Nerd Font Mono:pixelsize=14:antialias=true:hinting=true,\
+                         xft:Noto Color Emoji:pixelsize=13,\
 			 xft:Unifont,\
 URxvt*lineSpace:         0
 
 ! make persian text connected
-URxvt*letterSpace:       0
+URxvt*letterSpace:       1
 
 
 ! unicode character support
@@ -72,8 +72,6 @@ URxvt*iso14755_52:       false
 URxvt*iso14755:          false
 URxvt*print-pipe:        cat > /dev/null
 
-
-
 ! Extensions
-!----------------------------------
-URxvt*perl-ext-common:   bootstrap,bidi
+!---------------------------------
+URxvt*.perl-ext-common:  bidi
