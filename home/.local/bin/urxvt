@@ -1,0 +1,2 @@
+#!/usr/bin/env sh
+$(whereis urxvtc | awk '{print $3}')

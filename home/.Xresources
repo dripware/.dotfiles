@@ -60,7 +60,7 @@ URxvt*iso14756:          true
 URxvt*cursorBlink:       0
 URxvt*scrollBar:         false
 URxvt*urgentOnBell:      0
-URxvt*internalBorder:    10
+URxvt*internalBorder:    2
 
 
 ! Misc

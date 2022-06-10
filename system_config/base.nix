@@ -43,7 +43,6 @@
   services.xserver.displayManager.sddm.enable = true;
   services.xserver.displayManager.startx.enable = true;
   services.xserver.windowManager.qtile.enable = true;
-  services.urxvtd.enable = true;
 
 
   
@@ -79,7 +78,7 @@
     noto-fonts-emoji
     vazir-fonts
     vazir-code-font
-    (nerdfonts.override { fonts = [ "JetBrainsMono" "SymbolsOnly" ]; })
+    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
     jetbrains-mono
   ];
   environment.localBinInPath = true;

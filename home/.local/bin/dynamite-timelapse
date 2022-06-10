@@ -12,6 +12,6 @@ while : ; do
 		HOUR=0
 		MIN=0
 	fi
-	echo -ne "\033[2K\r$HOUR:$MIN	$(faketime "$HOUR:$MIN" ./dynamite-update)"
+	echo -ne "\033[2K\r$HOUR:$MIN	$(faketime "$HOUR:$MIN" dynamite-update)"
 	sleep 0.4
 done
