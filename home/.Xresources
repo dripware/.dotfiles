@@ -74,4 +74,8 @@ URxvt*print-pipe:        cat > /dev/null
 
 ! Extensions
 !---------------------------------
-URxvt*.perl-ext-common:  bidi
+URxvt*.perl-ext-common:  bidi,clipboard-osc,resize-font
+
+
+
+

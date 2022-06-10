@@ -20,6 +20,7 @@
     tmux
     nixos-option
     (perl.withPackages(ps: [ ps.Appcpanminus ]))
+    ueberzug
   ];
   home.file = with builtins; 
     let
