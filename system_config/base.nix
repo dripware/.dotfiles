@@ -79,7 +79,8 @@
     noto-fonts-emoji
     vazir-fonts
     vazir-code-font
-    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+    (nerdfonts.override { fonts = [ "JetBrainsMono" "SymbolsOnly" ]; })
+    jetbrains-mono
   ];
   environment.localBinInPath = true;
   environment.pathsToLink = [ "/share/zsh" ];

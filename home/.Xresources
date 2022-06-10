@@ -40,9 +40,12 @@
 
 ! Text
 !----------------------------------
-URxvt*font:              xft:JetBrainsMono Nerd Font Mono:size=11:antialias=true:hinting=true,\
-                         xft:Noto Color Emoji:size=11:antialias=true:hinting=true
-URxvt*lineSpace:         -1
+URxvt*font:              xft:JetBrains Mono:size=11:antialias=true:hinting=true,\
+                         xft:Vazir Code WOL:size=12:antialias=true:hinting=true,\
+			 xft:JetBrainsMono Nerd Font Mono:size=11:antialias=true:hinting=true,\
+                         xft:Noto Color Emoji:size=9,\
+			 xft:Unifont,\
+URxvt*lineSpace:         0
 
 ! make persian text connected
 URxvt*letterSpace:       0
@@ -67,6 +70,7 @@ URxvt*saveline:          10000
 ! disable control+shift
 URxvt*iso14755_52:       false
 URxvt*iso14755:          false
+URxvt*print-pipe:        cat > /dev/null
 
 
 
