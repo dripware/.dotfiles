@@ -1,50 +1,75 @@
-*.cursor:      #a89984
-*.background:  #282828
-*.foreground:  #d4be98
+! Theme
+!----------------------------------
 
-!! Black
-*.color0:          #665c54
-*.color8:          #928374
+*.cursor:                #a89984
+*.background:            #282828
+*.foreground:            #d4be98
 
-!! Red
-*.color1:          #ea6962
-*.color9:          #ea6962
+! Black
+*.color0:                #665c54
+*.color8:                #928374
 
-!! Green
-*.color2:          #a9b665
-*.color10:         #a9b665
+! Red
+*.color1:                #ea6962
+*.color9:                #ea6962
 
-!! Yellow
-*.color3:          #e78a4e
-*.color11:         #d8a657
+! Green
+*.color2:                #a9b665
+*.color10:               #a9b665
 
-!! Blue
-*.color4:          #7daea3
-*.color12:         #7daea3
+! Yellow
+*.color3:                #e78a4e
+*.color11:               #d8a657
 
-!! Magenta
-*.color5:          #d3869b
-*.color13:         #d3869b
+! Blue
+*.color4:                #7daea3
+*.color12:               #7daea3
 
-!! Cyan
-*.color6:          #89b482
-*.color14:         #89b482
+! Magenta
+*.color5:                #d3869b
+*.color13:               #d3869b
 
-!! White
-*.color7:          #d4be98
-*.color15:         #d4be98
+! Cyan
+*.color6:                #89b482
+*.color14:               #89b482
 
-!! Text
-URxvt.font:        xft:JetBrainsMono Nerd Font:size=11:antialias=true
-URxvt.letterSpace: 0
-URxvt.lineSpace:   0
+! White
+*.color7:                #d4be98
+*.color15:               #d4be98
 
-!! Appearance
-URxvt.cursorBlink: 0
-URxvt.saveline:    10000
-URxvt.scrollBar:   false
-URxvt.urgentOnBell:0
-URxvt.iso14756:    true
 
-!! Extensions
-URxvt.perl-ext-common: bootstrap,bidi
+! Text
+!----------------------------------
+URxvt*font:              xft:JetBrainsMono Nerd Font Mono:size=11:antialias=true:hinting=true,\
+                         xft:Noto Color Emoji:size=11:antialias=true:hinting=true
+URxvt*lineSpace:         -1
+
+! make persian text connected
+URxvt*letterSpace:       0
+
+
+! unicode character support
+URxvt*iso14756:          true
+
+
+! Appearance
+!----------------------------------
+URxvt*cursorBlink:       0
+URxvt*scrollBar:         false
+URxvt*urgentOnBell:      0
+URxvt*internalBorder:    10
+
+
+! Misc
+!----------------------------------
+URxvt*saveline:          10000
+
+! disable control+shift
+URxvt*iso14755_52:       false
+URxvt*iso14755:          false
+
+
+
+! Extensions
+!----------------------------------
+URxvt*perl-ext-common:   bootstrap,bidi

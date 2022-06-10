@@ -76,15 +76,16 @@
     git
   ];
   fonts.fonts = with pkgs; [
-    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+    noto-fonts-emoji
     vazir-fonts
     vazir-code-font
+    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
   ];
   environment.localBinInPath = true;
   environment.pathsToLink = [ "/share/zsh" ];
 
   systemd.user.extraConfig = ''
-    DefaultEnvironment="PATH=/home/${local_config.username}/.nix-profile/bin:/run/current-system/sw/bin"
+    DefaultEnvironment="PATH=/home/${local_config.username}/.nix-profile/bin:/run/current-system/sw/bin:/home/${local_config.username}/.local/bin"
   '';
 
   # Some programs need SUID wrappers, can be configured further or are

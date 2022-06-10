@@ -16,7 +16,7 @@
     tree
     hyperfine
     nix-generate-from-cpan
-    rxvt_unicode
+    rxvt-unicode-emoji
     tmux
     nixos-option
     (perl.withPackages(ps: [ ps.Appcpanminus ]))
@@ -25,6 +25,9 @@
     let
       dirs = attrNames (readDir ../home);
       arr  = map (name: {inherit name; value = { source = ../home + "/${name}"; recursive = true; };}) dirs;
+      extra = {
+        ".Xresources".onChange = "xrdb -merge .Xresources";
+      };
     in
-      listToAttrs arr;
+      extra // (listToAttrs arr);
 }
