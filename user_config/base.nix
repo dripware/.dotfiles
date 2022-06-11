@@ -1,4 +1,4 @@
-{ pkgs,... }:{
+{ pkgs, inputs, ... }:{
   programs.home-manager.enable = true;
 
   home.packages = with pkgs; [
@@ -21,6 +21,11 @@
     nixos-option
     (perl.withPackages(ps: [ ps.Appcpanminus ]))
     ueberzug
+    kmonad
+    zsh
+  ];
+  nixpkgs.overlays = [
+    inputs.kmonad.overlays.default
   ];
   home.file = with builtins; 
     let

@@ -3,8 +3,8 @@ LEN=100
 STEP=2
 TOTAL=$(( $LEN / $STEP * 4))
 
-SOURCEDIR=~/.local/dynamite/bg
-OUTDIR=~/.cache/dynamite/out
+SOURCEDIR=${XDG_DATA_HOME:-~/.local/share}/dynamite/bg
+OUTDIR=${XDG_CACHE_HOME:-~/.cache}/dynamite/out
 MORNING=$SOURCEDIR/morning.jpg
 DAY=$SOURCEDIR/day.jpg
 EVENING=$SOURCEDIR/evening.jpg

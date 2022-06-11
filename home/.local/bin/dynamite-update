@@ -8,7 +8,7 @@ MORNING_WEIGHT=0
 DAY_WEIGHT=1.2
 EVENING_WEIGHT=0
 NIGHT_WEIGHT=1.4
-OUTDIR=~/.cache/dynamite/out
+OUTDIR=${XDG_CACHE_HOME:-~/.cache}/dynamite/out
 
 STEP=2
 
@@ -68,7 +68,7 @@ set_wallpaper(){
 	FILENAME="$NAME-$PERCENT.jpg"
 	echo $FILENAME
 	feh --bg-scale --no-fehbg $OUTDIR/$FILENAME
-	echo "$(date '+%D +%H:+%M') $FILENAME" >> /tmp/dynamite-log
+	echo "$(date '%+D %+H:%+M') $FILENAME" >> /tmp/dynamite-log
 }
 
 

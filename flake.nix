@@ -7,13 +7,17 @@
       url = github:nix-community/home-manager;
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    kmonad = {
+      url = "github:kmonad/kmonad?dir=nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # local config flake contains bunch of information about this specific
     # installation of nixos. it's generated automatically by install.sh
     # it also contains hardware-configuration.nix
     local_config.url = "path:./local_config";
   };
-  outputs = { self, nixpkgs, home-manager, local_config }@inputs:
+  outputs = { self, nixpkgs, home-manager, local_config, kmonad }@inputs:
     let 
       system = "x86_64-linux";
       username = local_config.username;
@@ -29,6 +33,7 @@
       homeConfigurations.main = home-manager.lib.homeManagerConfiguration {
         inherit system username;
         configuration = import ./user_config/${local_config.user_config}.nix;
+	extraSpecialArgs = { inherit inputs; };
         homeDirectory = "/home/${username}";
         stateVersion = "21.11";
       };
