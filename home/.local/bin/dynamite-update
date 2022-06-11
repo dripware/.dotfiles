@@ -13,7 +13,7 @@ OUTDIR=${XDG_CACHE_HOME:-~/.cache}/dynamite/out
 STEP=2
 
 ensure_exists(){
-	if [ -z $OUTDIR ]; then
+	if [ -d $OUTDIR ]; then
 		echo "wallpapers are not generated. generating them now..."
 		dynamite-generate
 	fi

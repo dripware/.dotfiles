@@ -1,3 +1,0 @@
-#!/usr/bin/env sh
-echo "running urxvt instaed..."
-$(whereis urxvt | awk '{print $3}')
