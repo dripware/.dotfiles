@@ -1,6 +1,9 @@
+#!/usr/bin/env bash
+# this script will fake time passing by for dynamite-update script using 
+# faketime library so you can see a timelapse of the wallpaper
 HOUR=0
 MIN=0
-STEP=10
+STEP=10 # speed of timelapse
 while : ; do
 	if (( $MIN + $STEP >= 60)); then
 		HOUR=$(($HOUR + 1 ))

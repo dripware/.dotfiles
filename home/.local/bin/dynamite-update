@@ -1,23 +1,32 @@
 #!/usr/bin/env bash
-MORNING_TIME=600
-DAY_TIME=1300
-EVENING_TIME=2000
-NIGHT_TIME=2100
 
+# each time of the day. each time follows this formula TIME = HOUR * 100 + MIN / 60 * 100
+MORNING_TIME=600 # 6:00
+DAY_TIME=1300 # 13:00
+EVENING_TIME=2000 # 20:00
+NIGHT_TIME=2100 # 21:00
+
+# each weight shows how strong each time of the day is. weight can be only 0 or higher
+# less weight means that time of the day will pass quicker than a time which has a higher weight
+# for example if NIGHT_TIME has weight of 2 the transition between evening to night 
+# and transition between night and morning will happend quicker
 MORNING_WEIGHT=0
 DAY_WEIGHT=1.2
 EVENING_WEIGHT=0
-NIGHT_WEIGHT=1.4
+NIGHT_WEIGHT=1.8
 OUTDIR=${XDG_CACHE_HOME:-~/.cache}/dynamite/out
 
 STEP=2
 
+# bootstraps dynamite-generate
 ensure_exists(){
 	if [ ! -d $OUTDIR ]; then
 		echo "wallpapers are not generated. generating them now..."
 		dynamite-generate
 	fi
 }
+
+# subtrack two times with wrap functionality
 neg(){
 	if (( $2 < $1 )); then
 		echo $(( 2400 + $2 - $1))
@@ -26,6 +35,7 @@ neg(){
 	fi
 }
 
+# system time right now
 TIME=$(( $(date +%-H) * 100 + $(date +%-M) * 100 / 60 ))
 
 is_between(){
@@ -44,18 +54,21 @@ is_between(){
 		return 1
 	fi
 }
+# turn time to percent recpecting weights
 get_percent(){
 	START=$1
 	END=$2
 	WEIGHT=$3
-	TAKEN_FRACTION=$(neg $START $TIME)
-	TOTAL_FRACTION=$(neg $START $END)
+	TAKEN_FRACTION=$(neg $START $TIME) # how many hours of this time of the day has passed
+	TOTAL_FRACTION=$(neg $START $END) # how many hours it is overall
 	RAW_PERCENT=$(( $TAKEN_FRACTION * 100 / $TOTAL_FRACTION ))
 	if [[ $WEIGHT ]]; then
 		WEIGHT_ADJUSTED=$(awk -v weight=$WEIGHT -v percent=$RAW_PERCENT 'BEGIN{print int(percent * (percent/100)^weight)}' )
 	else
 		WEIGHT_ADJUSTED=$RAW_PERCENT
 	fi
+	# result is devided and multiplied by $STEP to normalize the result to a multiplier of step to make sure that the file actually exists
+	# for example if step is 4 : 2% becomes 0, 11% becomes 8, 16% becomes 16 (because it's already a multiplier of 4) etc.
 	STEP_ADJUSTED=$(( $WEIGHT_ADJUSTED / $STEP * $STEP  ))
 	echo $STEP_ADJUSTED
 }

@@ -1,3 +1,9 @@
+# this target unit is started with .xprofile or .xsession
+# so you can set WantedBy=xsession.target in future user services
+# and they will be automatically started at xorg start
+# also every newly made service or unit which sets xsession.target
+# as a "WantedBy" should also have a symlink in xsession.target.wants directory
+
 [Unit]
 Description=Xsession is running
 BindsTo=graphical-session.target

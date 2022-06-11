@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# this script uses imagemagick to generate different new wallpapers from source wallpapers
+# source wallpapers are merged using imagemagick and converted into a inter-state frame
+# the result is wallpapers which show different times of the day
+
 LEN=100
 STEP=2
 TOTAL=$(( $LEN / $STEP * 4))
@@ -18,6 +22,12 @@ update_progress(){
 rm -rf $OUTDIR
 mkdir $OUTDIR &> /dev/null
 
+# this function takes two of the images as arguments and generates the inter-state frames based on pictures
+# at the beggining the first image (PIC1) is completely visible and the second image (PIC2) is completely
+# transparent. but as $i gets bigger PIC1 will become less visible and PIC2 will become more visible
+# PIC1-0.jpg -> highest PIC1 and lowest PIC2 visibility
+# PIC1-50.jpg -> same visibility for PIC1 and PIC2
+# PIC1-100.jpg -> lowest PIC1 and highest PIC2 visiblity
 gen_loop(){
 	PIC1="$1"
 	PIC2="$2"
@@ -36,10 +46,9 @@ gen_loop(){
 		i=$(($i + ( $STEP ) ))
 	done
 }
-gen_section(){
-	gen_loop $1 $2
-}
-gen_section $MORNING $DAY |
-(sleep 0.5 && gen_section $DAY $EVENING) |
-(sleep 1 && gen_section $EVENING $NIGHT) |
-(sleep 1.5 && gen_section $NIGHT $MORNING)
+
+# generates inter-state frames in 4 processes to make it faster
+gen_loop $MORNING $DAY |
+(sleep 0.5 && gen_loop $DAY $EVENING) |
+(sleep 1 && gen_loop $EVENING $NIGHT) |
+(sleep 1.5 && gen_loop $NIGHT $MORNING)

@@ -1,9 +1,12 @@
+# this service will run once after login into x server and after that
+# it runs in an interval using dynamite.timer
 [Unit]
 Description=Dynamically change wallpaper
 BindsTo=graphical-session.target
 
 [Service]
 Type=oneshot
+# this is required for feh to work
 Environment=DISPLAY=:0
 ExecStart=/usr/bin/env bash -c "dynamite-update"
 

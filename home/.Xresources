@@ -40,6 +40,10 @@
 
 ! Text
 !----------------------------------
+! JetBrains Mono (no nerd font) should be first because if Vazir Code is the first font
+! it will mess up the font
+! also Vazir Code should be set before any Nerd Font for all persian letters to be rendered
+! correctly (else some letters render as nerd font icons)
 URxvt*font:              xft:JetBrains Mono:pixelsize=14:antialias=true:hinting=true,\
                          xft:Vazir Code WOL:pixelsize=16:antialias=true:hinting=true,\
 			 xft:JetBrainsMono Nerd Font Mono:pixelsize=14:antialias=true:hinting=true,\
@@ -47,7 +51,6 @@ URxvt*font:              xft:JetBrains Mono:pixelsize=14:antialias=true:hinting=
 			 xft:Unifont,\
 URxvt*lineSpace:         0
 
-! make persian text connected
 URxvt*letterSpace:       1
 
 
@@ -70,6 +73,7 @@ URxvt*saveline:          10000
 ! disable control+shift
 URxvt*iso14755_52:       false
 URxvt*iso14755:          false
+
 URxvt*print-pipe:        cat > /dev/null
 
 ! Extensions
