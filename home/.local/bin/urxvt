@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+echo "running urxvtc instead..."
+$(whereis urxvtc | awk '{print $3}')

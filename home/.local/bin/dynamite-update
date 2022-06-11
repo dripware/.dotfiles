@@ -13,7 +13,7 @@ OUTDIR=${XDG_CACHE_HOME:-~/.cache}/dynamite/out
 STEP=2
 
 ensure_exists(){
-	if [ -d $OUTDIR ]; then
+	if [ ! -d $OUTDIR ]; then
 		echo "wallpapers are not generated. generating them now..."
 		dynamite-generate
 	fi
@@ -68,7 +68,7 @@ set_wallpaper(){
 	FILENAME="$NAME-$PERCENT.jpg"
 	echo $FILENAME
 	feh --bg-scale --no-fehbg $OUTDIR/$FILENAME
-	echo "$(date '%+D %+H:%+M') $FILENAME" >> /tmp/dynamite-log
+	echo "$(date '+%-D +%-H:+%-M') $FILENAME" >> /tmp/dynamite-log
 }
 
 

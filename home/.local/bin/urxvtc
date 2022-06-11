@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+echo "running urxvt instead..."
+$(whereis urxvt | awk '{print $3}')

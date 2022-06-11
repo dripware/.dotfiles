@@ -1,8 +1,11 @@
 [Unit]
 Description=Dynamically change wallpaper
-Wants=network.target
-After=network.target
+BindsTo=graphical-session.target
 
 [Service]
 Type=oneshot
-ExecStart=/home/dripware/.local/bin/dynamite-update
+Environment=DISPLAY=:0
+ExecStart=/usr/bin/env bash -c "dynamite-update"
+
+[Install]
+WantedBy=xsession.target
