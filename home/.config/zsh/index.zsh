@@ -1,8 +1,7 @@
 #!/usr/bin/env zsh
-
-ANTIGEN="${XDG_DATA_HOME:~/.local/share}/antigen.zsh"
+ANTIGEN="${XDG_DATA_HOME:-~/.local/share}/antigen.zsh"
 if [ ! -f $ANTIGEN ]; then
-	echo "installing antigen... (this only happens once"
-	curl -L git.io/antigen > ${XDG_DATA_HOME:~/.local/share}/antigen.zsh
+	curl -L git.io/antigen -o $ANTIGEN
+	chmod +x $ANTIGEN
 fi
-$ANTIGEN
+source $ANTIGEN
