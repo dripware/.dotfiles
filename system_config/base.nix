@@ -39,11 +39,21 @@
   # };
 
   # Enable the X11 windowing system.
-  services.xserver.enable = true;
-  services.xserver.displayManager.sddm.enable = true;
-  services.xserver.displayManager.startx.enable = true;
-  services.xserver.windowManager.qtile.enable = true;
-
+  services = {
+    xserver = {
+      enable = true;
+      displayManager = {
+        defaultSession = "none+qtile";
+        sddm = {
+	  enable = true;
+	  autoNumlock = true;
+	};
+      };
+      windowManager = {
+	qtile.enable = true;
+      };
+    };
+  };
 
   
 
@@ -93,6 +103,7 @@
     XDG_CONFIG_HOME = "\${HOME}/.config";
     XDG_BIN_HOME    = "\${HOME}/.local/bin";
     XDG_DATA_HOME   = "\${HOME}/.local/share";
+    DOTFILES_HOME   = "\${HOME}/.dotfiles/home";
   };
 
   # systemd.user.extraConfig = ''

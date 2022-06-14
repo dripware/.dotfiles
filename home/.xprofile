@@ -1,6 +1,2 @@
 #!/usr/bin/env bash
-systemctl --user import-environment PATH
-# all other user services at ~/.config/sytemd/user rely on xsession.target
-# so you only need to start xsession.target and all user services will start
-# after it
-systemctl --no-block --user start xsession.target
+source ${XDG_CONFIG_HOME:-~/.config}/x11/xprofile

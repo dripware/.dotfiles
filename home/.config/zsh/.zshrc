@@ -1,1 +1,1 @@
-${ZDOTDIR}/index.zsh
+source ${ZDOTDIR}/index.zsh

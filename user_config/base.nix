@@ -31,9 +31,6 @@
     let
       dirs = attrNames (readDir ../home);
       arr  = map (name: {inherit name; value = { source = ../home + "/${name}"; recursive = true; };}) dirs;
-      extra = {
-        ".Xresources".onChange = "xrdb -merge .Xresources";
-      };
     in
-      extra // (listToAttrs arr);
+      listToAttrs arr;
 }

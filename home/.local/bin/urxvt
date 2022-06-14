@@ -3,4 +3,4 @@
 # we swap urxvt with urxvtc so by default the urxvtc client
 # is launched for better performance and less resource usage
 echo "running urxvtc instead..."
-$(whereis urxvtc | awk '{print $3}')
+$(whereis urxvtc | awk '{print $3}') $@
