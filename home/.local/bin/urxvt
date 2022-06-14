@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+if [[ ! -z $(ps cax | grep urxvtd) ]]; then # if urxvt daemon running
+  echo "running urxvtc instead..."
+  exec urxvtc
+else
+  exec $(whereis urxvt | awk '{print $3}')
+fi
