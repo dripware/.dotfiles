@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-# since urxvt daemon (urxvtd) is started automatically
-# we swap urxvt with urxvtc so by default the urxvtc client
-# is launched for better performance and less resource usage
-echo "running urxvtc instead..."
-$(whereis urxvtc | awk '{print $3}') $@

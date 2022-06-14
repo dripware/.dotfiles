@@ -91,24 +91,6 @@
     (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
     jetbrains-mono
   ];
-  programs.zsh.enable = true;
-  users.defaultUserShell = pkgs.zsh;
-
-
-
-  environment.localBinInPath = true;
-  environment.pathsToLink = [ "/share/zsh" ];
-  environment.sessionVariables = rec {
-    XDG_CACHE_HOME  = "\${HOME}/.cache";
-    XDG_CONFIG_HOME = "\${HOME}/.config";
-    XDG_BIN_HOME    = "\${HOME}/.local/bin";
-    XDG_DATA_HOME   = "\${HOME}/.local/share";
-    DOTFILES_HOME   = "\${HOME}/.dotfiles/home";
-  };
-
-  # systemd.user.extraConfig = ''
-  #   DefaultEnvironment="PATH=/home/${local_config.username}/.nix-profile/bin:/run/current-system/sw/bin:/home/${local_config.username}/.local/bin"
-  # '';
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

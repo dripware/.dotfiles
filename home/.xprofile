@@ -1,2 +1,3 @@
-#!/usr/bin/env bash
-source ${XDG_CONFIG_HOME:-~/.config}/x11/xprofile
+#!/usr/bin/env sh
+alias dick='xterm'
+source "${XDG_CONFIG_HOME:-$HOME/.config}/x11/profile"

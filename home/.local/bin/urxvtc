@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-# in any case if the fake urxvt (urxvtc which is masked as urxvt in ~/.local/bin)
-# couldn't start you can use urxvtc command which is the original urxvt without daemon
-echo "running urxvt instead..."
-$(whereis urxvt | awk '{print $3}') $@

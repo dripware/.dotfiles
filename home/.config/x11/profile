@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/profile.zsh"
+xrdb $(dirname $BASH_SOURCE)/resources
+systemctl --user import-environment PATH DISPLAY
+systemctl --no-block --user start xsession.target

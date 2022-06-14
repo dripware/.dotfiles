@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-# this file will be sourced by start scripts like startx and sx
-source ${XDG_CONFIG_HOME:-~/.config}/x11/xprofile
-exec qtile start
-
