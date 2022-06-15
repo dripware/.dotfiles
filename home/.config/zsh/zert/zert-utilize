@@ -1,0 +1,23 @@
+#!/usr/bin/zsh
+# this function will fetch a framework repository if it's not available
+
+local prezto="https://github.com/sorin-ionescu/prezto"
+local ohmyzsh="https://github.com/ohmyzsh/ohmyzsh"
+
+# fetch from github if not available
+if [[ "$2" == "ohmyzsh" ]] || [[ "$2" == "prezto" ]]; then
+	FRAMEWORK="$2"
+	if [[ ! -d "$ZERTDIR/frameworks/$FRAMEWORK" ]]; then
+		echo "fetching $FRAMEWORK...."
+		git clone "${(P)FRAMEWORK}" "$ZERTDIR/frameworks/$FRAMEWORK"
+	fi
+else
+	echo "invalid framework" && return
+fi
+
+# ohmyzsh specific stuff
+if [[ "$2" == "ohmyzsh" ]]; then
+	export ZSH_CACHE_DIR="$ZERTDIR"
+	# add ohmyzsh completions
+	fpath+=("$ZERTDIR"/completions)
+fi

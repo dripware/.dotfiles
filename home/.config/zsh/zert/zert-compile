@@ -1,0 +1,26 @@
+#!/usr/bin/env zsh
+# this function is used to compile zsh plugins to zwc files
+(){
+	setopt LOCAL_OPTIONS NO_NOTIFY NO_MONITOR
+	local PLUGIN_DIR="$ZERTDIR/plugins/$1"
+	function zert-compile-file(){
+		local file=$1
+		local HASH=$(echo ${file//\//_} | md5sum | cut -f1 -d" ")
+		cp $file /tmp/$HASH
+		if zcompile -R /tmp/$HASH > /dev/null 2>&1; then
+			echo -ne "\r\033[2K$file\b"
+			mv /tmp/$HASH.zwc $file.zwc -f
+		fi
+		rm /tmp/$HASH /tmp/$HASH.zwc -f
+	}
+	[[ ! -d "$PLUGIN_DIR" ]] && echo "plugin doesn't exist: $PLUGIN_DIR" && return
+	local pids=()
+	for file in $(find "$PLUGIN_DIR" -not -path "$PLUGIN_DIR/.*" -not -path "$PLUGIN_DIR/*.zwc" -type f ); do
+		zert-compile-file $file &
+		pids+=($!)
+	done
+	for pid in ${pids[@]}; do
+		wait $pid
+	done
+	echo ""
+}

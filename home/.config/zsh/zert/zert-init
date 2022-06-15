@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+# initialize zert
+
+# make sure zert data, plugin, framework and tmp folders exist
+[[ ! -d "$ZERTDIR"/plugins ]] && mkdir "$ZERTDIR"/plugins -p
+[[ ! -d "$ZERTDIR"/frameworks ]] && mkdir "$ZERTDIR"/frameworks -p
+[[ ! -d "$ZERTDIR"/completions ]] && mkdir "$ZERTDIR"/completions -p
+[[ ! -d /tmp/zert ]] && mkdir /tmp/zert
+
+
+# enable completion function ( some plugins use these function to add completions)
+autoload -Uz compinit

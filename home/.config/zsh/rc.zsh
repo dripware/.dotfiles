@@ -1,2 +1,5 @@
 #!/usr/bin/env zsh
-source "${XDG_CONFIG_HOME:-~HOME/.config}/zsh/alias.zsh"
+setopt no_global_rcs
+source "$ZDOTDIR/alias.zsh"
+autoload -Uz $ZDOTDIR/zert/* # lazy load zert
+export ZERTDIR=$HOME/.local/share/zsh/zert

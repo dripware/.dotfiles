@@ -1,0 +1,64 @@
+#!/usr/bin/env zsh
+# this function will load a plugin
+# it will fetch it using git clone if it's not available in cache already
+
+local PLUGIN_PATH
+
+if [[ "${2:0:1}" == "@" ]]; then # loading from a framework (ohmyzsh, prezto)
+
+	local FRAMEWORK="$( echo $2 | cut -d ":" -f1 | cut -c 2-)"
+	[[ ! -d "$ZERTDIR/frameworks/$FRAMEWORK" ]] && echo "$FRAMEWORK does not exist (maybe utilize first?)" && return
+
+	if [[ "$FRAMEWORK" == "ohmyzsh" ]]; then # loading from ohmyzsh
+
+		local TYPE="$(echo $2 | cut -d ':' -f2)"
+		local NAME="$(echo $2 | cut -d ':' -f3)"
+		[[ -z "$NAME" ]] && echo "invalid name" && return
+
+		if [[ "$TYPE" == "lib" ]]; then # loading a library from ohmyzsh
+			PLUGIN_PATH="$ZERTDIR/frameworks/$FRAMEWORK/lib/$NAME.zsh"
+			[[ ! -f $PLUGIN_PATH ]] && echo "$NAME library does not exist" && return
+
+		elif [[ "$TYPE" == "plugin" ]]; then # loading a plugin from ohmyzsh
+			local PLUGIN_DIR="$ZERTDIR/frameworks/$FRAMEWORK/plugins/$NAME"
+			[[ ! -d $PLUGIN_DIR ]] && echo "$NAME plugin does not exist" && return
+			fpath+=("$PLUGIN_DIR")
+			PLUGIN_PATH="$PLUGIN_DIR/$NAME.plugin.zsh"
+		else
+			echo "invalid type" && return
+		fi
+
+	elif [[ "$FRAMEWORK" == "prezto" ]]; then # loading a module from prezto
+		local NAME="$(echo $2 | cut -d ':' -f2)"
+
+
+	else
+		echo "invalid framework" && return
+	fi
+
+else # loading plugin from a url (github repo)
+	local PLUGIN_URL="$2"
+	local PLUGIN_NAME="$(basename $PLUGIN_URL .git)"
+	local PLUGIN_DIR="$ZERTDIR/plugins/$PLUGIN_NAME"
+
+	# fetch from url if not cached
+	if [[ ! -d $PLUGIN_DIR ]]; then
+		echo "fetching $PLUGIN_NAME..."
+		git clone $PLUGIN_URL $PLUGIN_DIR -q
+		echo "compiling $PLUGIN_NAME files..."
+		zert-compile $PLUGIN_NAME
+	fi
+
+	PLUGIN_PATH=$PLUGIN_DIR/$PLUGIN_NAME.plugin.zsh
+fi
+
+# load plugin
+[[ ! -f $PLUGIN_PATH ]] && return # no plugin or not found
+if [[ "$3" == "--no-alias" ]]; then
+	local ALIASES=$(alias -L)
+	source $PLUGIN_PATH
+	unalias -m '*'
+	eval $ALIASES;
+else
+	source $PLUGIN_PATH
+fi

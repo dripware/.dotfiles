@@ -1,0 +1,19 @@
+#!/usr/bin/env zsh
+# zert is a diy plugin manager for zsh
+local ZERTDIR=${XDG_DATA_HOME:-$HOME/.local/share}/zsh/zert
+
+zert-init # TODO: remove
+
+# if --help flag is passed or no command is passed, print help message
+if (( $# == 0 )) || [[ "$@[$#]" == "--help" ]]; then
+	zert-help $@
+elif [[ "$1" == "load" ]]; then
+	[[ -z "$2" ]] && echo "plugin url is required" && return
+	zert-load $@
+elif [[ "$1" == "utilize" ]]; then
+	[[ -z "$2" ]] && echo "framework name is required" && return
+	zert-utilize $@
+elif [[ "$1" == "init" ]]; then
+	zert-init $@
+fi
+

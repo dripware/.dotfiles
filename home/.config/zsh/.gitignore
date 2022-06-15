@@ -1,0 +1,3 @@
+# ignore zsh compiled files
+*.zwc
+.zcompdump

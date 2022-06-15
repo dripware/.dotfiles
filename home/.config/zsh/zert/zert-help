@@ -1,0 +1,45 @@
+#!/usr/bin/env zsh
+# this is a help function for zert zsh plugin managaer
+# --help flag can be passed to zert and each command aswell
+# example:
+# zert --help
+# zert update --help
+local COMMAND=$2
+if [[ -z $COMMAND ]] || [[ "$COMMAND" == "--help" ]]; then
+	echo "zert COMMAND [ARGS]                                                "
+	echo "COMMANDS:                                                          "
+	echo "   load PLUGIN            - load new plugin                        "
+	echo "   update                 - update all plugins                     "
+	echo "   utilize FRAMEWORK      - fetch a framework plugins (omz,prezto) "
+	echo "   status                 - status of loaded plugins               "
+	echo "   rm-cache               - remove cache                           "
+	echo "ARGS:                                                              "
+	echo "   --help                 - get help                               "
+elif [[ "$COMMAND" == "load" ]]; then
+	echo "zert load PLUGIN                                                   "
+	echo "load plugin from framework or url (uses cache if already fetched)  "
+	echo "PLUGIN:                                                            "
+	echo "   <url>                  - git repo url passed to git clone       "
+	echo "   @ohmyzsh:lib:name      - load a library from ohmyzsh            "
+	echo "   @ohmyzsh:plugin:name   - load a plugin  from ohmyzsh            "
+	echo "   @prezto:module         - load a moudle  from prezto             "
+	echo "ARGS:                                                              "
+	echo "   --no-alias             - ignore plugin aliases                  "
+elif [[ "$COMMAND" == "update" ]]; then
+	echo "zert update"
+	echo "update all plugins and pull update for frameworks"
+elif [[ "$COMMAND" == "utilize" ]]; then
+	echo "zert utilize FRAMEWORK                                             "
+	echo "fetch a framework git repository (ohmyzsh and prezto)              "
+	echo "FRAMEWORK:                                                         "
+	echo "    prezto                - clone prezto repository to local       "
+	echo "    ohmyzsh               - clone ohmyzsh repository to local      "
+elif [[ "$COMMAND" == "status" ]]; then
+	echo "zert status"
+	echo "get status of loaded plugins"
+elif [[ "$COMMAND" == "rm-cache" ]]; then
+	echo "zert rm-cache"
+	echo "remove all cached data (fethced plugins, cloned frameworks, etc. ) "
+else
+	echo "unkown command"
+fi

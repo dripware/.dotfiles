@@ -23,6 +23,7 @@
     ueberzug
     kmonad
     zsh
+    gh
   ];
   nixpkgs.overlays = [
     inputs.kmonad.overlays.default
