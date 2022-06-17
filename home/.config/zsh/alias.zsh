@@ -1,8 +1,5 @@
 #!/usr/bin/env zsh
 
-# move wget history file to better place for cleaner $HOME
-alias wget='wget --hist-file="${XDG_CACHE_HOME:-~/.cache}/wget-hsts"' 
-
 # make ls use colors and hide group names in ls -al
 alias ls='ls --color=tty -G' 
 

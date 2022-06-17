@@ -27,7 +27,6 @@ zert utilize ohmyzsh
 # clippaste | <command> # paste clipboard to stdin
 zert load @ohmyzsh:lib:clipboard
 
-
 #####################
 # ZSH OPTIONS 
 #####################

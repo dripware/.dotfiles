@@ -59,14 +59,11 @@ fi
 
 # load plugin
 [[ ! -f $PLUGIN_PATH ]] && return # no plugin or not found
-(){
-	setopt local_options no_sh_glob
-	if [[ "$3" == "--no-alias" ]]; then
-		local ALIASES=$(alias -L)
-		source $PLUGIN_PATH
-		unalias -m '*'
-		eval $ALIASES;
-	else
-		source $PLUGIN_PATH
-	fi
-}
+if [[ "$3" == "--no-alias" ]]; then
+	local ALIASES=$(alias -L)
+	source $PLUGIN_PATH
+	unalias -m '*'
+	eval $ALIASES;
+else
+	source $PLUGIN_PATH
+fi

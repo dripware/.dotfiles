@@ -15,8 +15,6 @@ elif [[ "$1" == "init" ]]; then
 	zert-init $@ # because zert function aren't loaded yet
 elif [[ "$1" == "apply" ]]; then
 	zert-apply $@
-elif [[ "$1" == "update" ]]; then
-	zert-update $@
 elif [[ "$1" == "rm-cache" ]]; then
 	zert-rm-cache $@
 else

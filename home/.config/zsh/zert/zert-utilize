@@ -27,7 +27,7 @@ if [[ "$2" == "ohmyzsh" ]]; then
 	ZSH_CACHE_DIR="$ZERTDIR"
 
 	# enable completion function ( some plugins use these function to add completions)
-	! command -v compdef && autoload -Uz compinit compaudit && compinit -i -d $ZSH_COMPDUMP
+	! command -v compdef && autoload -Uz compinit && compinit -i -d $ZSH_COMPDUMP
 
 	# add ohmyzsh completions
 	fpath+=("$ZERTDIR"/completions)

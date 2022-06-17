@@ -3,13 +3,12 @@
 # --help flag can be passed to zert and each command aswell
 # example:
 # zert --help
-# zert update --help
+# zert load --help
 local COMMAND=$2
 if [[ -z $COMMAND ]] || [[ "$COMMAND" == "--help" ]]; then
 	echo "zert COMMAND [ARGS]                                                "
 	echo "COMMANDS:                                                          "
 	echo "   load PLUGIN            - load new plugin                        "
-	echo "   update                 - update all plugins                     "
 	echo "   utilize FRAMEWORK      - fetch a framework plugins (omz,prezto) "
 	echo "   rm-cache               - remove cache                           "
 	echo "   apply                  - musr run after loading all plugins     "
@@ -26,9 +25,6 @@ elif [[ "$COMMAND" == "load" ]]; then
 	echo "   @prezto:module         - load a moudle  from prezto             "
 	echo "ARGS:                                                              "
 	echo "   --no-alias             - ignore plugin aliases                  "
-elif [[ "$COMMAND" == "update" ]]; then
-	echo "zert update"
-	echo "update all plugins and pull update for frameworks"
 elif [[ "$COMMAND" == "utilize" ]]; then
 	echo "zert utilize FRAMEWORK                                             "
 	echo "fetch a framework git repository (ohmyzsh and prezto)              "
