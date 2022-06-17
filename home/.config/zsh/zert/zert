@@ -1,8 +1,5 @@
 #!/usr/bin/env zsh
 # zert is a diy plugin manager for zsh
-local ZERTDIR=${XDG_DATA_HOME:-$HOME/.local/share}/zsh/zert
-
-zert-init # TODO: remove
 
 # if --help flag is passed or no command is passed, print help message
 if (( $# == 0 )) || [[ "$@[$#]" == "--help" ]]; then
@@ -14,6 +11,14 @@ elif [[ "$1" == "utilize" ]]; then
 	[[ -z "$2" ]] && echo "framework name is required" && return
 	zert-utilize $@
 elif [[ "$1" == "init" ]]; then
-	zert-init $@
+	autoload -Uz $ZDOTDIR/zert/zert-init
+	zert-init $@ # because zert function aren't loaded yet
+elif [[ "$1" == "apply" ]]; then
+	zert-apply $@
+elif [[ "$1" == "update" ]]; then
+	zert-update $@
+elif [[ "$1" == "rm-cache" ]]; then
+	zert-rm-cache $@
+else
+	echo "unkown command"
 fi
-

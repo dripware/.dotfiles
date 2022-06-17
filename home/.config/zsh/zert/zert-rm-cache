@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+# this function is used to remove all zert data and cache
+echo "removing plugins and frameworks..."
+rm "${ZERTDIR}" -rf
+echo "removing compdump..."
+rm "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/compdump"
+zert-init

@@ -6,10 +6,17 @@ local ohmyzsh="https://github.com/ohmyzsh/ohmyzsh"
 
 # fetch from github if not available
 if [[ "$2" == "ohmyzsh" ]] || [[ "$2" == "prezto" ]]; then
-	FRAMEWORK="$2"
-	if [[ ! -d "$ZERTDIR/frameworks/$FRAMEWORK" ]]; then
+	local FRAMEWORK="$2"
+	local FRAMEWORK_DIR="$ZERTDIR/frameworks/$FRAMEWORK"
+	if [[ ! -d "$FRAMEWORK_DIR" ]]; then
 		echo "fetching $FRAMEWORK...."
-		git clone "${(P)FRAMEWORK}" "$ZERTDIR/frameworks/$FRAMEWORK"
+		if ! git clone --recurse-submodules -j8 "${(P)FRAMEWORK}" "$FRAMEWORK_DIR"; then
+			echo "fetching framework $FRAMEWORK failed..."
+			rm -rf "$FRAMEWORK_DIR"
+			return
+		fi
+		echo "compiling $FRAMEWORK files..."
+		zert-compile "$FRAMEWORK_DIR"
 	fi
 else
 	echo "invalid framework" && return
@@ -17,7 +24,18 @@ fi
 
 # ohmyzsh specific stuff
 if [[ "$2" == "ohmyzsh" ]]; then
-	export ZSH_CACHE_DIR="$ZERTDIR"
+	ZSH_CACHE_DIR="$ZERTDIR"
+
+	# enable completion function ( some plugins use these function to add completions)
+	! command -v compdef && autoload -Uz compinit compaudit && compinit -i -d $ZSH_COMPDUMP
+
 	# add ohmyzsh completions
 	fpath+=("$ZERTDIR"/completions)
+	autoload -Uz $ZDOTDIR/zert/ohmyzsh/*
+fi
+
+# prezto specific stuff
+if [[ "$2" == "prezto" ]]; then
+	autoload -Uz $ZDOTDIR/prezto/*
+	ZPREZTODIR="$ZERTDIR/frameworks/prezto"
 fi

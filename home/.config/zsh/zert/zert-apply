@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+#  this script should be run after loading all plugins
+
+# if compdef isn't available chanses are compinit has not been called yet
+! command -v compdef && autoload -Uz compinit && compinit -i -d $ZSH_COMPDUMP
+	
+# remove functions and variables created by zert
+unset ZSH_CACHE_DIR ZPREZTODIR
+for func in $(ls $ZDOTDIR/zert -I zert-update -I zert-rm-cache); do unfunction $func; done

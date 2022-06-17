@@ -18,9 +18,8 @@ if [[ "${2:0:1}" == "@" ]]; then # loading from a framework (ohmyzsh, prezto)
 		if [[ "$TYPE" == "lib" ]]; then # loading a library from ohmyzsh
 			PLUGIN_PATH="$ZERTDIR/frameworks/$FRAMEWORK/lib/$NAME.zsh"
 			[[ ! -f $PLUGIN_PATH ]] && echo "$NAME library does not exist" && return
-
 		elif [[ "$TYPE" == "plugin" ]]; then # loading a plugin from ohmyzsh
-			local PLUGIN_DIR="$ZERTDIR/frameworks/$FRAMEWORK/plugins/$NAME"
+			local PLUGIN_DIR="$ZERTDIR/frameworks/ohmyzsh/plugins/$NAME"
 			[[ ! -d $PLUGIN_DIR ]] && echo "$NAME plugin does not exist" && return
 			fpath+=("$PLUGIN_DIR")
 			PLUGIN_PATH="$PLUGIN_DIR/$NAME.plugin.zsh"
@@ -30,8 +29,10 @@ if [[ "${2:0:1}" == "@" ]]; then # loading from a framework (ohmyzsh, prezto)
 
 	elif [[ "$FRAMEWORK" == "prezto" ]]; then # loading a module from prezto
 		local NAME="$(echo $2 | cut -d ':' -f2)"
-
-
+		local PLUGIN_DIR="$ZERTDIR/frameworks/prezto/modules/$NAME"
+		[[ ! -d "$PLUGIN_DIR" ]] && echo "$NAME module does not exist" && return
+		[[ -d "$PLUGIN_DIR/functions" ]] && fpath+=("$PLUGIN_DIR/functions") && autoload -Uz $PLUGIN_DIR/functions/*
+		[[ -f "$PLUGIN_DIR/init.zsh" ]] && PLUGIN_PATH="$PLUGIN_DIR/init.zsh"
 	else
 		echo "invalid framework" && return
 	fi
@@ -44,9 +45,13 @@ else # loading plugin from a url (github repo)
 	# fetch from url if not cached
 	if [[ ! -d $PLUGIN_DIR ]]; then
 		echo "fetching $PLUGIN_NAME..."
-		git clone $PLUGIN_URL $PLUGIN_DIR -q
+		if ! git clone $PLUGIN_URL $PLUGIN_DIR -q; then
+			echo "fetching plugin $PLUGIN_NAME failed"
+			rm -rf "$PLUGIN_DIR"
+			return
+		fi
 		echo "compiling $PLUGIN_NAME files..."
-		zert-compile $PLUGIN_NAME
+		zert-compile $PLUGIN_DIR
 	fi
 
 	PLUGIN_PATH=$PLUGIN_DIR/$PLUGIN_NAME.plugin.zsh
@@ -54,11 +59,14 @@ fi
 
 # load plugin
 [[ ! -f $PLUGIN_PATH ]] && return # no plugin or not found
-if [[ "$3" == "--no-alias" ]]; then
-	local ALIASES=$(alias -L)
-	source $PLUGIN_PATH
-	unalias -m '*'
-	eval $ALIASES;
-else
-	source $PLUGIN_PATH
-fi
+(){
+	setopt local_options no_sh_glob
+	if [[ "$3" == "--no-alias" ]]; then
+		local ALIASES=$(alias -L)
+		source $PLUGIN_PATH
+		unalias -m '*'
+		eval $ALIASES;
+	else
+		source $PLUGIN_PATH
+	fi
+}

@@ -11,8 +11,9 @@ if [[ -z $COMMAND ]] || [[ "$COMMAND" == "--help" ]]; then
 	echo "   load PLUGIN            - load new plugin                        "
 	echo "   update                 - update all plugins                     "
 	echo "   utilize FRAMEWORK      - fetch a framework plugins (omz,prezto) "
-	echo "   status                 - status of loaded plugins               "
 	echo "   rm-cache               - remove cache                           "
+	echo "   apply                  - musr run after loading all plugins     "
+	echo "   init                   - must run before loading any plugin     "
 	echo "ARGS:                                                              "
 	echo "   --help                 - get help                               "
 elif [[ "$COMMAND" == "load" ]]; then
@@ -31,15 +32,19 @@ elif [[ "$COMMAND" == "update" ]]; then
 elif [[ "$COMMAND" == "utilize" ]]; then
 	echo "zert utilize FRAMEWORK                                             "
 	echo "fetch a framework git repository (ohmyzsh and prezto)              "
+	echo "ohmyzsh should be utilized after loading normal and prezto plugins "
 	echo "FRAMEWORK:                                                         "
 	echo "    prezto                - clone prezto repository to local       "
 	echo "    ohmyzsh               - clone ohmyzsh repository to local      "
-elif [[ "$COMMAND" == "status" ]]; then
-	echo "zert status"
-	echo "get status of loaded plugins"
 elif [[ "$COMMAND" == "rm-cache" ]]; then
 	echo "zert rm-cache"
 	echo "remove all cached data (fethced plugins, cloned frameworks, etc. ) "
+elif [[ "$COMMAND" == "apply" ]]; then
+	echo "zert apply"
+	echo "must run after loading all plugins. some extra stuff like completions and stuf"
+elif [[ "$COMMAND" == "init" ]]; then
+	echo "zert init"
+	echo "must run before loading any plugin. sets some required variables and makes some folders"
 else
 	echo "unkown command"
 fi

@@ -2,7 +2,7 @@
 # this function is used to compile zsh plugins to zwc files
 (){
 	setopt LOCAL_OPTIONS NO_NOTIFY NO_MONITOR
-	local PLUGIN_DIR="$ZERTDIR/plugins/$1"
+	local PLUGIN_DIR="$1"
 	function zert-compile-file(){
 		local file=$1
 		local HASH=$(echo ${file//\//_} | md5sum | cut -f1 -d" ")
@@ -19,8 +19,12 @@
 		zert-compile-file $file &
 		pids+=($!)
 	done
+	unset file
 	for pid in ${pids[@]}; do
 		wait $pid
 	done
+	unset pid
 	echo ""
-}
+	echo "adding *.zwc to .gitignore"
+	echo "*.zwc" >> $PLUGIN_DIR/.gitignore
+} $@

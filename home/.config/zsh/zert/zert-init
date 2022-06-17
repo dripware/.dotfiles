@@ -1,12 +1,14 @@
 #!/usr/bin/env zsh
 # initialize zert
 
+ZERTDIR=${XDG_DATA_HOME:-$HOME/.local/share}/zsh/zert
+
 # make sure zert data, plugin, framework and tmp folders exist
 [[ ! -d "$ZERTDIR"/plugins ]] && mkdir "$ZERTDIR"/plugins -p
 [[ ! -d "$ZERTDIR"/frameworks ]] && mkdir "$ZERTDIR"/frameworks -p
 [[ ! -d "$ZERTDIR"/completions ]] && mkdir "$ZERTDIR"/completions -p
+[[ ! -d "${XDG_CACHE_HOME:-~/.cache}/zsh" ]] && mkdir "${XDG_CACHE_HOME:-~/.cache}/zsh" -p
 [[ ! -d /tmp/zert ]] && mkdir /tmp/zert
+ZSH_COMPDUMP="${XDG_CACHE_HOME:-~/.cache}/zsh/compdump"
 
-
-# enable completion function ( some plugins use these function to add completions)
-autoload -Uz compinit
+autoload -Uz $ZDOTDIR/zert/* # lazy load zert functions
