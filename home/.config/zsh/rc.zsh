@@ -35,5 +35,21 @@ zert load @ohmyzsh:lib:clipboard
 setopt auto_pushd
 setopt pushd_ignore_dups
 setopt pushd_silent
-setopt no_global_rcs
+
+# don't use any default rc files
+setopt no_global_rcs 
+
+# use bash-like extended globbing (!,@,#,+)
 setopt ksh_glob
+
+# if globbing has no matches throw an error
+setopt no_match
+
+# ignore contigouos duplicates
+setopt hist_ignore_dups
+
+# don't add commands which start with a space (or an alias with a leading space)
+setopt hist_ignore_space
+
+# don't export if you don't want shared history between zsh and bash
+HISTFILE=${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history

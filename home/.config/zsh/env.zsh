@@ -22,7 +22,6 @@ export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
 export GOPATH="${XDG_DATA_HOME:-$HOME/.local/sahre}/go"
 export ANSIBLE_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/ansible.cfg"
 export UNISON="${XDG_DATA_HOME:-$HOME/.local/share}/unison" # file sync
-export HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history" # zsh history
 export ELECTRUMDIR="${XDG_DATA_HOME:-$HOME/.local/share}/electrum"
 
 export PATH="${XDG_BIN_HOME:-$HOME/.local/bin}:$PATH"
