@@ -77,15 +77,15 @@ ask_for_machine_name(){
 }
 ask_for_system_config(){
 	__print "Avaliable system configs:"
-	for i in $(ls $HERE/system_config -I base.nix); do
-		__print "\t- $i"
+	for config in $(ls $HERE/system_config -I base.nix); do
+		__print "\t- ${config%.*}"
 	done
 	__prompt "Enter system configuration profile you want to use: "
 }
 ask_for_user_config(){
 	__print "Avaliable user configs:"
-	for i in $(ls $HERE/user_config -I base.nix); do
-		__print "\t- $i"
+	for config in $(ls $HERE/user_config -I base.nix); do
+		__print "\t- ${config%.*}"
 	done
 	__prompt "Enter user configuration profile you want to use: "
 }
