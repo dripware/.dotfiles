@@ -3,11 +3,15 @@
 # make ls use colors and hide group names in ls -al
 alias ls='ls --color=tty -G' 
 
+# swap ls for lsd if possible alias ls='lsd'
+command -v lsd &> /dev/null && alias ls='lsd'
+
 # commonly used aliases for ls
-alias lsa='ls -lah'
-alias l='ls -lah'
-alias ll='ls -lh'
+alias lsa='ls -lAh'
+alias l='ls -lAh'
 alias la='ls -lAh'
+alias ll='ls -lh'
+
 
 # make diff use colors
 alias diff='diff --color'
@@ -29,3 +33,7 @@ alias -g ......='../../../../..'
 # must be set. (by default zsh keeps the last command in history even if you
 # use HIST_NO_SPACE. 'fc -R' forces it to remove that aswell
 alias clear=" clear && fc -R" 
+
+# human readable file sizes
+alias df="df -h"
+alias du="du -h"

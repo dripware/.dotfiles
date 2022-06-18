@@ -53,3 +53,21 @@ setopt hist_ignore_space
 
 # don't export if you don't want shared history between zsh and bash
 HISTFILE=${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history
+
+# run background jobs at lower priority
+setopt bg_nice
+
+# no beep
+setopt no_beep
+
+# if a globbing pattern has no result return an error
+setopt no_match
+
+# on ambigous completion insert the first completion immediatly
+setopt menu_complete
+
+# Disable Ctrl-s to freeze terminal
+stty stop undef
+
+# include hidden files in completions
+_comp_options+=(globdots)

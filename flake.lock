@@ -64,11 +64,13 @@
     },
     "local_config": {
       "inputs": {
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": [
+          "nixpkgs"
+        ]
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-mbEEMG5RHvnw4NUZZL/xNgNThTZMnrOksxq5aeJQrEY=",
+        "narHash": "sha256-uP/ejfVRZ/XCxnyGc4hVF5MyyTxr4XGvPBtcMcKsSqY=",
         "path": "./local_config",
         "type": "path"
       },
@@ -78,20 +80,6 @@
       }
     },
     "nixpkgs": {
-      "locked": {
-        "lastModified": 1655451545,
-        "narHash": "sha256-uLHNGkZbINBZ8Yz9z+/6xF77EVLPTasDyfE/sQpzZ4A=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "3802c98cffe636d54dc8f2812d143e50b4b07bb0",
-        "type": "github"
-      },
-      "original": {
-        "id": "nixpkgs",
-        "type": "indirect"
-      }
-    },
-    "nixpkgs_2": {
       "locked": {
         "lastModified": 1655306633,
         "narHash": "sha256-nv4FfWWV/dEelByjXJtJkoDPOHIsKfLq50RN3Hqq5Yk=",
@@ -143,7 +131,7 @@
         "home-manager": "home-manager",
         "kmonad": "kmonad",
         "local_config": "local_config",
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs"
       }
     },
     "utils": {
