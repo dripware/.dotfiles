@@ -78,16 +78,16 @@ ask_for_machine_name(){
 ask_for_system_config(){
 	__print "Avaliable system configs:"
 	for i in $(ls $HERE/system_config -I base.nix); do
-		__print -e "\t- $i"
+		__print "\t- $i"
 	done
-	__prompt "Enter system configuration profile you want to use"
+	__prompt "Enter system configuration profile you want to use: "
 }
 ask_for_user_config(){
 	__print "Avaliable user configs:"
 	for i in $(ls $HERE/user_config -I base.nix); do
-		__print -e "\t- $i"
+		__print "\t- $i"
 	done
-	__prompt "Enter user configuration profile you want to use"
+	__prompt "Enter user configuration profile you want to use: "
 }
 ask_for_inputs(){
 	DISK="$(ask_for_disk)"

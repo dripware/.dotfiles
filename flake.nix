@@ -15,7 +15,10 @@
     # local config flake contains bunch of information about this specific
     # installation of nixos. it's generated automatically by install.sh
     # it also contains hardware-configuration.nix
-    local_config.url = "path:./local_config";
+    local_config = {
+      url = "path:./local_config";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = { self, nixpkgs, home-manager, local_config, kmonad }@inputs:
     let 
