@@ -24,17 +24,21 @@
     let 
       system = "x86_64-linux";
       username = local_config.username;
+      pkgs = import nixpkgs {
+      	allowUnfree = true;
+	system = "x86_64-linux";
+      };
     in {
       # configuration are named "main" because the specific configuration for each user
       # is dynamically loaded by local_config.user_config and local_config.system_config
       # that makes adding new configurations easier
       nixosConfigurations.main = nixpkgs.lib.nixosSystem {
-        inherit system;
+        inherit system pkgs;
 	specialArgs = { inherit local_config; };
         modules = [ ./system_config/${local_config.system_config}.nix ];
       };
       homeConfigurations.main = home-manager.lib.homeManagerConfiguration {
-        inherit system username;
+        inherit system username pkgs;
         configuration = import ./user_config/${local_config.user_config}.nix;
 	extraSpecialArgs = { inherit inputs; };
         homeDirectory = "/home/${username}";

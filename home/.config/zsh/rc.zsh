@@ -39,7 +39,7 @@ zert load @ohmyzsh:lib:clipboard
 
 
 # syntax highlighting
-# zert load https://github.com/zdharma-continuum/fast-syntax-highlighting
+zert load https://github.com/zdharma-continuum/fast-syntax-highlighting
 zert load https://github.com/romkatv/powerlevel10k
 
 #####################

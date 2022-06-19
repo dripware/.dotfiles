@@ -27,6 +27,7 @@
     lsd # better ls
     xclip # clipboard integration in terminal
     fzf
+    asciinema
   ];
   nixpkgs.overlays = [
     inputs.kmonad.overlays.default
