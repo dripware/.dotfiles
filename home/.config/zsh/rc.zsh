@@ -1,4 +1,10 @@
 #!/usr/bin/env zsh
+# enable powerlevel10k instant prompt if available
+# this should always be at the top of zshrc
+# makes prompt lag disappear
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+	source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
 source "$ZDOTDIR/alias.zsh"
 
 # set colors for ls command
@@ -12,6 +18,10 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 # initialize zert (zsh diy package manager)
 autoload -Uz "$ZDOTDIR/zert/zert"
 zert init
+
+# LOCAL PLUGINS
+#####################
+source $ZDOTDIR/local_plugins/prompt_flusher.plugin.zsh
 
 # OH MY ZSH 
 #####################
@@ -29,7 +39,8 @@ zert load @ohmyzsh:lib:clipboard
 
 
 # syntax highlighting
-zert load https://github.com/zdharma-continuum/fast-syntax-highlighting
+# zert load https://github.com/zdharma-continuum/fast-syntax-highlighting
+zert load https://github.com/romkatv/powerlevel10k
 
 #####################
 # ZSH OPTIONS 
@@ -77,8 +88,8 @@ setopt no_match
 # on ambigous completion insert the first completion immediatly
 setopt menu_complete
 
-# Disable Ctrl-s to freeze terminal
-stty stop undef
-
 # include hidden files in completions
 _comp_options+=(globdots)
+
+# if a p10k config is available use it
+[[ -f $ZDOTDIR/p10k.zsh ]] && source $ZDOTDIR/p10k.zsh
