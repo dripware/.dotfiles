@@ -70,7 +70,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-uP/ejfVRZ/XCxnyGc4hVF5MyyTxr4XGvPBtcMcKsSqY=",
+        "narHash": "sha256-RBymsJ7d0sAbAr2385lDqZZ44DCRBfPu0l86a/gb70A=",
         "path": "./local_config",
         "type": "path"
       },

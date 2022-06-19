@@ -12,10 +12,6 @@ alias l='ls -lAh'
 alias la='ls -lAh'
 alias ll='ls -lh'
 
-# tree view
-if command -v lsd &> /dev/null; then alias lst='lsd --tree';
-elif command -v tree &> /dev/null; then alias lst='tree';
-else alias lst="find . -not -path '*/.*' | sed -e \"s/[^-][^\/]*\//  |/g\" -e \"s/|\([^ ]\)/|-\1/\""; fi
 
 # make diff use colors
 alias diff='diff --color'

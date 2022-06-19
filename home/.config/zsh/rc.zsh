@@ -27,6 +27,10 @@ zert utilize ohmyzsh
 # clippaste | <command> # paste clipboard to stdin
 zert load @ohmyzsh:lib:clipboard
 
+# prints 256 colors. useful for debugging terminal themes and colors
+# just run 'spectrum'
+zert load @ohmyzsh:lib:spectrum
+
 #####################
 # ZSH OPTIONS 
 #####################
