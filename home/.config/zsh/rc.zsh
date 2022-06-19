@@ -56,6 +56,12 @@ setopt hist_ignore_dups
 # don't add commands which start with a space (or an alias with a leading space)
 setopt hist_ignore_space
 
+# don't store the "history" command itself in history
+setopt hist_no_store
+
+# add entered command to $HISTFILE immediatly
+setopt inc_append_history
+
 # don't export if you don't want shared history between zsh and bash
 HISTFILE=${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history
 

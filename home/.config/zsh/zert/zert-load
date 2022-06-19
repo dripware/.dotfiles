@@ -23,6 +23,9 @@ if [[ "${2:0:1}" == "@" ]]; then # loading from a framework (ohmyzsh, prezto)
 			[[ ! -d $PLUGIN_DIR ]] && echo "$NAME plugin does not exist" && return
 			fpath+=("$PLUGIN_DIR")
 			PLUGIN_PATH="$PLUGIN_DIR/$NAME.plugin.zsh"
+		elif [[ "$TYPE" == "theme" ]]; then # loading a theme from ohmyzsh
+			local PLUGIN_PATH="$ZERTDIR/frameworks/ohmyzsh/themes/$NAME.theme-zsh"
+			[[ ! -f $PLUGIN_PATH ]] && echo "$NAME theme does not exist" && return
 		else
 			echo "invalid type" && return
 		fi
@@ -53,8 +56,9 @@ else # loading plugin from a url (github repo)
 		echo "compiling $PLUGIN_NAME files..."
 		zert-compile $PLUGIN_DIR
 	fi
-
-	PLUGIN_PATH=$PLUGIN_DIR/$PLUGIN_NAME.plugin.zsh
+	[ -f "$PLUGIN_DIR/$PLUGIN_NAME.plugin.zsh" ] && PLUGIN_PATH=$PLUGIN_DIR/$PLUGIN_NAME.plugin.zsh
+	[ -f "$PLUGIN_DIR/$PLUGIN_NAME.zsh-theme" ] && PLUGIN_PATH=$PLUGIN_DIR/$PLUGIN_NAME.zsh-theme
+	[ -f "$PLUGIN_DIR/$PLUGIN_NAME.zsh" ] && PLUGIN_PATH=$PLUGIN_DIR/$PLUGIN_NAME.zsh
 fi
 
 # load plugin
