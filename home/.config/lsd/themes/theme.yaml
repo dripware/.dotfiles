@@ -19,8 +19,8 @@ size:
   large: 2
 inode:
   valid: 13
-  invalid: 245
+  invalid: grey
 links:
   valid: 13
-  invalid: 245
-tree-edge: 8
+  invalid: grey
+tree-edge: grey

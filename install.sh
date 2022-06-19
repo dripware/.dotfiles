@@ -185,13 +185,14 @@ copy_dotfiles(){
 	nixos-enter --root /mnt -c "sudo -Hu $USERNAME ln /home/$USERNAME/.dotfiles/.githooks /home/$USERNAME/.dotfiles/.git/hooks -s"
 	nixos-enter --root /mnt -c "sudo -Hu $USERNAME git --git-dir=/home/$USERNAME/.dotfiles/.git remote set-url origin git@github.com:dripware/.dotfiles"
 	nixos-enter --root /mnt -c "sudo -Hu $USERNAME git --git-dir=/home/$USERNAME/.dotfiles/.git --work-tree=/home/$USERNAME/.dotfiles add /home/$USERNAME/.dotfiles/local_config -f"
-	nixos-enter --root /mnt -c "nix-daemon & sudo -Hu $USERNAME nix flake lock --update-input local_config /home/$USERNAME/.dotfiles"
+	nixos-enter --root /mnt -c "nix-daemon" &
+	nixos-enter --root /mnt -c "sudo -Hu $USERNAME nix flake lock --update-input local_config /home/$USERNAME/.dotfiles"
 	rm -rf /mnt/home/$USERNAME/tmp_repo
 }
 install_homemanager(){
 	__print "installing home-manager..."
-	nixos-enter --root /mnt -c "nix-daemon & sudo -Hu $USERNAME nix build /home/$USERNAME/.dotfiles#homeConfigurations.main.activationPackage -o /home/$USERNAME/result"
-	nixos-enter --root /mnt -c "nix-daemon & sudo -Hu $USERNAME /home/$USERNAME/result/activate"
+	nixos-enter --root /mnt -c "sudo -Hu $USERNAME nix build /home/$USERNAME/.dotfiles#homeConfigurations.main.activationPackage -o /home/$USERNAME/result"
+	nixos-enter --root /mnt -c "sudo -Hu $USERNAME /home/$USERNAME/result/activate"
 	rm /mnt/home/$USERNAME/result
 }
 generate_wallpaper(){
