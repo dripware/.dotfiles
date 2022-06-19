@@ -27,9 +27,9 @@ zert utilize ohmyzsh
 # clippaste | <command> # paste clipboard to stdin
 zert load @ohmyzsh:lib:clipboard
 
-# prints 256 colors. useful for debugging terminal themes and colors
-# just run 'spectrum'
-zert load @ohmyzsh:lib:spectrum
+
+# syntax highlighting
+zert load https://github.com/zdharma-continuum/fast-syntax-highlighting
 
 #####################
 # ZSH OPTIONS 
@@ -39,6 +39,7 @@ zert load @ohmyzsh:lib:spectrum
 setopt auto_pushd
 setopt pushd_ignore_dups
 setopt pushd_silent
+setopt pushd_minus
 
 # don't use any default rc files
 setopt no_global_rcs 
