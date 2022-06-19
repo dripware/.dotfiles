@@ -21,7 +21,7 @@ zert init
 
 # LOCAL PLUGINS
 #####################
-source $ZDOTDIR/local_plugins/prompt_flusher.plugin.zsh
+# source $ZDOTDIR/local_plugins/prompt_flusher.plugin.zsh
 
 # OH MY ZSH 
 #####################
@@ -40,7 +40,10 @@ zert load @ohmyzsh:lib:clipboard
 
 # syntax highlighting
 zert load https://github.com/zdharma-continuum/fast-syntax-highlighting
+
+# prompt 
 zert load https://github.com/romkatv/powerlevel10k
+source "${ZDOTDIR}/p11k.zsh"
 
 #####################
 # ZSH OPTIONS 
