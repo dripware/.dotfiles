@@ -37,3 +37,6 @@ alias clear=" clear && fc -R"
 # human readable file sizes
 alias df="df -h"
 alias du="du -h"
+
+# search in history with fzf
+alias history="history | fzf"

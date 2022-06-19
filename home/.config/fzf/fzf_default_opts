@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+export FZF_DEFAULT_OPTS='--reverse --height 40%'
