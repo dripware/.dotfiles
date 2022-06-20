@@ -21,7 +21,8 @@ zert init
 
 # LOCAL PLUGINS
 #####################
-# source $ZDOTDIR/local_plugins/prompt_flusher.plugin.zsh
+# don't execute command if a alias is available and force user to use the alias
+source $ZDOTDIR/local_plugins/alias_trainer.plugin.zsh
 
 # OH MY ZSH 
 #####################
@@ -44,6 +45,9 @@ zert load https://github.com/zdharma-continuum/fast-syntax-highlighting
 # prompt 
 zert load https://github.com/romkatv/powerlevel10k
 source "${ZDOTDIR}/p11k.zsh"
+
+# recommend available aliases for entered command
+zert load @ohmyzsh:plugin:alias-finder
 
 #####################
 # ZSH OPTIONS 
@@ -76,8 +80,11 @@ setopt hist_no_store
 # add entered command to $HISTFILE immediatly
 setopt inc_append_history
 
-# don't export if you don't want shared history between zsh and bash
+# don't export this if you don't want shared history between zsh and bash
 HISTFILE=${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history
+
+# how big should $HISTFILE be
+SAVEHIST=4000
 
 # run background jobs at lower priority
 setopt bg_nice

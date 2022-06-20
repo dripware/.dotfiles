@@ -33,6 +33,7 @@ alias -g ......='../../../../..'
 # must be set. (by default zsh keeps the last command in history even if you
 # use HIST_NO_SPACE. 'fc -R' forces it to remove that aswell
 alias clear=" clear && fc -R" 
+alias exit=" exit"
 
 # human readable file sizes
 alias df="df -h"
