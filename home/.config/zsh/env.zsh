@@ -10,18 +10,32 @@ export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_BIN_HOME="$HOME/.local/bin"
 
 # move application specific config, data and cache to XDG directories for cleaner $HOME
-export LESSHISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/lesshst" # history cache for less
-export WGETRC="${XDG_CONFIG_HOME:-$HOME/.config}/wgetrc"
 export INPUTRC="${XDG_CONFIG_HOME:-$HOME/.config}/shell/inputrc" # GNU read line library (bash,sqlite,bc)
 export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh" # zsh config folder
+export ANSIBLE_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/ansible.cfg"
+export MOST_INITFILE="${XDG_CONFIG_HOME:-$HOME/.config}/most/lesskeys.rc" # most pager
+
 export KODI_DATA="${XDG_DATA_HOME:-$HOME/.local/share}/kodi"
-export PASSWORD_STORE_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/pass"
 export WINEPREFIX="${XDG_DATA_HOME:-$HOME/.local/share}/wine/default"
-export TMUX_TMPDIR="$XDG_RUNTIME_DIR"
 export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
 export GOPATH="${XDG_DATA_HOME:-$HOME/.local/sahre}/go"
-export ANSIBLE_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/ansible.cfg"
 export UNISON="${XDG_DATA_HOME:-$HOME/.local/share}/unison" # file sync
 export ELECTRUMDIR="${XDG_DATA_HOME:-$HOME/.local/share}/electrum"
+export PASSWORD_STORE_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/pass"
+
+export LESSHISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/lesshst" # history cache for less
+
+export TMUX_TMPDIR="$XDG_RUNTIME_DIR"
+
+# colored man pages for less (default pager is most. so this will only be useful
+# if most is not installed)
+export LESS_TERMCAP_md="$(tput bold; tput setaf 4)"
+export LESS_TERMCAP_me="$(tput sgr0)"
+export LESS_TERMCAP_mb="$(tput blink)"
+export LESS_TERMCAP_us="$(tput setaf 4)"
+export LESS_TERMCAP_ue="$(tput sgr0)"
+export LESS_TERMCAP_so="$(tput smso)"
+export LESS_TERMCAP_se="$(tput rmso)"
 
 export PATH="${XDG_BIN_HOME:-$HOME/.local/bin}:$PATH"
+command -v most &> /dev/null && export PAGER="most" || export PAGER="less"

@@ -21,8 +21,19 @@ zert init
 
 # LOCAL PLUGINS
 #####################
+
 # don't execute command if a alias is available and force user to use the alias
 source $ZDOTDIR/local_plugins/alias_trainer.plugin.zsh
+
+# NORMAL PLUGINS
+#####################
+
+# syntax highlighting
+zert load https://github.com/zdharma-continuum/fast-syntax-highlighting
+
+# prompt 
+zert load https://github.com/romkatv/powerlevel10k
+source "${ZDOTDIR}/p11k.zsh"
 
 # OH MY ZSH 
 #####################
@@ -37,14 +48,6 @@ zert utilize ohmyzsh
 # clippaste > <file> # paste clipboard to file
 # clippaste | <command> # paste clipboard to stdin
 zert load @ohmyzsh:lib:clipboard
-
-
-# syntax highlighting
-zert load https://github.com/zdharma-continuum/fast-syntax-highlighting
-
-# prompt 
-zert load https://github.com/romkatv/powerlevel10k
-source "${ZDOTDIR}/p11k.zsh"
 
 # recommend available aliases for entered command
 zert load @ohmyzsh:plugin:alias-finder

@@ -28,6 +28,9 @@
     xclip # clipboard integration in terminal
     fzf
     asciinema
+    navi
+    cheat
+    most
   ];
   nixpkgs.overlays = [
     inputs.kmonad.overlays.default

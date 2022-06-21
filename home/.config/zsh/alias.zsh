@@ -41,3 +41,6 @@ alias du="du -h"
 
 # search in history with fzf
 alias history="history | fzf"
+
+# typing man is faster than run-help
+unalias run-help
