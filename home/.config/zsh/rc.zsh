@@ -23,7 +23,10 @@ zert init
 #####################
 
 # don't execute command if a alias is available and force user to use the alias
-source $ZDOTDIR/local_plugins/alias_trainer.plugin.zsh
+source $ZDOTDIR/src/alias_trainer.plugin.zsh
+
+# colored man page
+source $ZDOTDIR/src/colored_man_page.plugin.zsh
 
 # NORMAL PLUGINS
 #####################

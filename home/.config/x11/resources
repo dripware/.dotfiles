@@ -79,3 +79,13 @@ URxvt*print-pipe:        cat > /dev/null
 ! Extensions
 !---------------------------------
 URxvt*.perl-ext-common:  bidi,clipboard-osc,resize-font
+
+! Required for Colored Man pages
+!---------------------------------
+! *VT100.colorBDMode:       true
+! *VT100.colorBD:           red
+! *VT100.colorULMode:       true
+! *VT100.colorUL:           cyan
+! URxvt.colorIT:            #a9b665
+! URxvt.colorBD:            #ea6962
+! URxvt.colorUL:            #7daea3

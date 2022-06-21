@@ -20,7 +20,7 @@
 % Color settings
 
 color normal lightgray default
-color status yellow blue
+color status default black
 color underline brightgreen default
 color overstrike brightred default
 

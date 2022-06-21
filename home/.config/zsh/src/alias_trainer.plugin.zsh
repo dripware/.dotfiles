@@ -2,7 +2,7 @@
 # if an alias for entered command ( or part of the command) is available
 # stop execution of command and force user to use the alias instead
 # useful to learn new aliases and detect unnecessary ones
-# this plugin requires alias-finder plugin from ohmyzsh to work
+# this requires alias-finder plugin from ohmyzsh to work
 function __alias_trainer(){
 	local RESULT=$(alias-finder "$BUFFER")
 	if [[ "$RESULT" != "" ]]; then 
