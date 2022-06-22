@@ -59,13 +59,20 @@ STFU="--allow-dirty" # stfu about git tree being dirty
 FLKU="nix flake update $DOTFILES $STFU" # update flake inputs
 GETSU="sudo echo" # ask for sudo password first (not during command execution)
 
-alias homs="home-manager switch --flake $DOTFILES#main $STFU"
+alias homs="home-manager switch --flake $DOTFILES#main"
 alias homu="$FLKU && homs"
 alias nixs="$GETSU && nixos-rebuild switch --flake $DOTFILES#main --use-remote-sudo"
 alias nixu="$GETSU && $FLKU && nixs"
-alias update="nixu && homu"
+alias update="nixu && homu && zert-update"
 alias upgrade="$GETSU && $FLKU && update"
 alias zshrc="exec zshrc"
+
+# copy and paste to clipboard easily
+alias copy="clipcopy"
+alias paste="clippaste"
+
+# copy cwd to clipboard
+alias copypath='echo $PWD | copy'
 
 # typing man is faster than run-help
 unalias run-help

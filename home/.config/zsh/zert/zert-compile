@@ -20,9 +20,7 @@
 		pids+=($!)
 	done
 	unset file
-	for pid in ${pids[@]}; do
-		wait $pid
-	done
+	for pid in ${pids[@]}; do wait $pid; done
 	unset pid
 	echo ""
 	echo "adding *.zwc to .gitignore"

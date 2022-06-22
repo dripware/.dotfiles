@@ -38,7 +38,12 @@
   home.file = with builtins; 
     let
       dirs = attrNames (readDir ../home);
-      arr  = map (name: {inherit name; value = { source = ../home + "/${name}"; recursive = true; };}) dirs;
+      fn = (name: {inherit name; value = { source = ../home + "/${name}"; recursive = true; };});
+      fnWithOnChange = (item: (pkgs.lib.recursiveUpdate { value.onChange = (elemAt item 1); } (fn (elemAt item 0)) ));
+      arr = map fn dirs;
+      onChange = (arr: (listToAttrs (map fnWithOnChange arr)));
     in
-      listToAttrs arr;
+      (pkgs.lib.recursiveUpdate (listToAttrs arr) (onChange [
+	# [ ".config/zsh" "zsh -ic zert-update" ]
+      ]));
 }

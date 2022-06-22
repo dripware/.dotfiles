@@ -1,26 +1,21 @@
 #!/usr/bin/env zsh
 # this function is used to update zert plugins and frameworks
-echo "UPDATING PLUGINS...."
-function __print(){
-	echo -ne "\033[2K\r$1..."
-}
-function __update(){
-	__print "updating $(basename $1)"
-	git -C $1 pull -q --recurse-submodules
-	echo -ne "\033[2K\rupdating $(basename $1)..."
-	__print "removing .zwc files..."
-	find $1 -type f | grep zwc | xargs rm
-	__print "compiling $1 files again..."
-	echo ""
-	zert-compile $1
-	
-}
-for plugin in $(ls -d $ZERTDIR/plugins/*); do
-	__update $plugin
-done
-echo -e "\nUPDATING FRAMEWORKS..."
-for framework in $(ls -d $ZERTDIR/frameworks/*); do
-	__update $plugin
-done
-echo ""
-unfunction __print
+(){
+  setopt local_options no_notify no_monitor no_aliases
+  local pids=()
+  echo "UPDATING PLUGINS AND FRAMEWORKS...."
+  function __update(){
+  	git -C "$1" pull -q --recurse-submodules &> /dev/null
+  	find -type f -name $1 | grep zwc | xargs rm &> /dev/null
+  	zert-compile "$1" &> /dev/null
+  }
+  for plugin in $(ls -d $ZERTDIR/plugins/*); do
+  	__update $plugin &
+	pids+=($!)
+  done
+  for framework in $(ls -d $ZERTDIR/frameworks/*); do
+  	__update $plugin &
+	pids+=($!)
+  done
+  for pid in ${pids[@]}; do wait $pid; done
+} $@

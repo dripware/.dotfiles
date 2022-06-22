@@ -17,7 +17,7 @@ ALIAS_AFTER=$(stat -c %y $ALIAS)
 if command -v home-manager &> /dev/null; then 
 	if [[ $RC_BEFORE != $RC_AFTER ]] || [[ $ALIAS_BEFORE != $ALIAS_AFTER ]]; then
 		git -C $DOTFILES add -A
-		homu || home-manager switch --flake "$DOTFILES#main"
+		home-manager switch --flake "$DOTFILES#main"
 	fi
 fi
 exec zsh

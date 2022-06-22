@@ -5,7 +5,6 @@
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
 	source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
-source "$ZDOTDIR/alias.zsh"
 
 # set colors for ls command
 [[ -z "$LS_COLORS" ]] && (( $+commands[dircolors] )) && eval "$(dircolors -b)"
@@ -55,6 +54,10 @@ zert load @ohmyzsh:lib:clipboard
 
 # recommend available aliases for entered command
 zert load @ohmyzsh:plugin:alias-finder
+
+# copy current command ($BUFFER) to system clipboard with Ctrl-O
+zert load @ohmyzsh:plugin:copybuffer
+
 
 #####################
 # ZSH OPTIONS 
@@ -110,3 +113,7 @@ _comp_options+=(globdots)
 
 # if a p10k config is available use it
 [[ -f $ZDOTDIR/p10k.zsh ]] && source $ZDOTDIR/p10k.zsh
+
+# aliases should be loaded at the and of rc because aliases might become a
+# problem in plugins and custom scripts
+source "$ZDOTDIR/alias.zsh"
