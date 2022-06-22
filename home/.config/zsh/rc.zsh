@@ -38,6 +38,7 @@ zert load https://github.com/zdharma-continuum/fast-syntax-highlighting
 zert load https://github.com/romkatv/powerlevel10k
 source "${ZDOTDIR}/p11k.zsh"
 
+
 # OH MY ZSH 
 #####################
 # all plugins and libraries from oh my zsh framework should be defined

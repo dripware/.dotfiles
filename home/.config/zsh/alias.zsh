@@ -7,9 +7,9 @@ alias ls='ls --color=tty -G'
 command -v lsd &> /dev/null && alias ls='lsd'
 
 # commonly used aliases for ls
-alias lsa='ls -lAh'
 alias l='ls -lAh'
 alias la='ls -lAh'
+alias lsa='ls -lAh'
 alias ll='ls -lh'
 
 

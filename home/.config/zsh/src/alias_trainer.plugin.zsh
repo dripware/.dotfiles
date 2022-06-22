@@ -3,9 +3,14 @@
 # stop execution of command and force user to use the alias instead
 # useful to learn new aliases and detect unnecessary ones
 # this requires alias-finder plugin from ohmyzsh to work
+alias noalias=""
 function __alias_trainer(){
 	local RESULT=$(alias-finder "$BUFFER")
-	if [[ "$RESULT" != "" ]]; then 
+	# don't do anything if command is prefixed with noalias
+	if [[ "$RESULT" == "noalias"* ]]; then
+		BUFFER="${BUFFER/noalias /}"
+		zle accept-line
+	elif [[ "$RESULT" != "" ]]; then 
 		echo '\n\033[0;34mUse Alias Instead\033[0;30m'
 		alias-finder "$BUFFER"
 		echo -ne '\n'

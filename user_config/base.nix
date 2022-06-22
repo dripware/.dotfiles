@@ -32,6 +32,7 @@
     cheat
     most
   ];
+
   nixpkgs.overlays = [
     inputs.kmonad.overlays.default
   ];
