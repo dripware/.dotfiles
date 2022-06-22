@@ -30,7 +30,6 @@
     asciinema
     navi
     cheat
-    most
   ];
 
   nixpkgs.overlays = [

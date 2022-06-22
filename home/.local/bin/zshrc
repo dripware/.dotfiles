@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# quickly modify and change zshrc and ailas file with default editor
+# this script will automatically runs home-manager switch if it's available
+RC=$DOTFILES/home/.config/zsh/rc.zsh
+ALIAS=$DOTFILES/home/.config/zsh/alias.zsh
+
+if [[ "$EDITOR" == *"vim"* ]];then
+	EDITOR_COMMAND="$EDITOR -O $RC $ALIAS"
+else
+	EDITOR_COMMAND="$EDITOR $RC $ALIAS"
+fi
+RC_BEFORE=$(stat -c %y $RC)
+ALIAS_BEFORE=$(stat -c %y $ALIAS)
+$EDITOR_COMMAND
+RC_AFTER=$(stat -c %y $RC)
+ALIAS_AFTER=$(stat -c %y $ALIAS)
+if command -v home-manager &> /dev/null; then 
+	if [[ $RC_BEFORE != $RC_AFTER ]] || [[ $ALIAS_BEFORE != $ALIAS_AFTER ]]; then
+		git -C $DOTFILES add -A
+		homu || home-manager switch --flake "$DOTFILES#main"
+	fi
+fi
+exec zsh

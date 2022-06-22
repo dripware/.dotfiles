@@ -13,7 +13,6 @@ export XDG_BIN_HOME="$HOME/.local/bin"
 export INPUTRC="${XDG_CONFIG_HOME:-$HOME/.config}/shell/inputrc" # GNU read line library (bash,sqlite,bc)
 export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh" # zsh config folder
 export ANSIBLE_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/ansible.cfg"
-export MOST_INITFILE="${XDG_CONFIG_HOME:-$HOME/.config}/most/lesskeys.rc" # most pager
 
 export KODI_DATA="${XDG_DATA_HOME:-$HOME/.local/share}/kodi"
 export WINEPREFIX="${XDG_DATA_HOME:-$HOME/.local/share}/wine/default"
@@ -27,6 +26,14 @@ export LESSHISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/lesshst" # history cache fo
 
 export TMUX_TMPDIR="$XDG_RUNTIME_DIR"
 
-
+# add .local/bin to path
 export PATH="${XDG_BIN_HOME:-$HOME/.local/bin}:$PATH"
-command -v most &> /dev/null && export PAGER="most" || export PAGER="less"
+
+# use neovim or vim as default editor if possible
+if command -v nvim &> /dev/null; then
+	export EDITOR="nvim"
+elif command -v vim &> /dev/null; then
+	export EDITOR="vim"
+fi
+
+export DOTFILES="$HOME/.dotfiles"
