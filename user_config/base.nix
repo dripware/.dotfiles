@@ -1,4 +1,6 @@
-{ pkgs, inputs, ... }:{
+{ pkgs, inputs, ... }: rec {
+  home.username = inputs.local_config.username;
+  home.homeDirectory = "/home/${home.username}";
   programs.home-manager.enable = true;
 
   home.packages = with pkgs; [
@@ -12,11 +14,9 @@
     gimp
     htop
     ncdu
-    wezterm
     tree
     hyperfine
     nix-generate-from-cpan
-    rxvt-unicode-emoji
     tmux
     nixos-option
     (perl.withPackages(ps: [ ps.Appcpanminus ]))
@@ -30,6 +30,14 @@
     asciinema
     navi
     cheat
+    dmenu
+    nodejs
+    nodePackages.npm
+    firefox
+    openvpn
+    unzip
+    update-resolv-conf
+    rofi
   ];
 
   nixpkgs.overlays = [
@@ -46,4 +54,6 @@
       (pkgs.lib.recursiveUpdate (listToAttrs arr) (onChange [
 	# [ ".config/zsh" "zsh -ic zert-update" ]
       ]));
+
+  home.stateVersion = "22.11";
 }

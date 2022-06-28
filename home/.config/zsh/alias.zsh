@@ -57,14 +57,17 @@ alias findf="find . -type f -name"
 # NIXOS ALIASES
 STFU="--allow-dirty" # stfu about git tree being dirty
 FLKU="nix flake update $DOTFILES $STFU" # update flake inputs
-GETSU="sudo echo" # ask for sudo password first (not during command execution)
+SU="sudo echo" # ask for sudo password first (not during command execution)
+GIT="git -C $DOTFILES add -A"
 
-alias homs="home-manager switch --flake $DOTFILES#main"
+alias homs="$GIT && home-manager switch --flake $DOTFILES#main"
 alias homu="$FLKU && homs"
-alias nixs="$GETSU && nixos-rebuild switch --flake $DOTFILES#main --use-remote-sudo"
-alias nixu="$GETSU && $FLKU && nixs"
-alias update="nixu && homu && zert-update"
-alias upgrade="$GETSU && $FLKU && update"
+alias nixs="$SU && nixos-rebuild switch --flake $DOTFILES#main --use-remote-sudo"
+alias nixu="$SU && $FLKU && nixs"
+alias update="$SU && nixs && homs"
+alias upgrade="$SU && $FLKU && update && zert-update"
+
+# zshrc is in ~/.local/bin with using exec it will run 'homs' after closingthe editor
 alias zshrc="exec zshrc"
 
 # copy and paste to clipboard easily
@@ -77,4 +80,4 @@ alias copypath='echo $PWD | copy'
 # typing man is faster than run-help
 unalias run-help
 
-unset LSD FLKU GETSU STFU
+unset LSD FLKU SU STFU GIT

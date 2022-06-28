@@ -60,7 +60,7 @@ zert load @ohmyzsh:plugin:copybuffer
 
 
 #####################
-# ZSH OPTIONS 
+# OPTIONS 
 #####################
 # automatically add directories to "directory stack" after each cd
 # required for 'cd -' and 'cd -1','cd -2' etc.
@@ -111,9 +111,15 @@ setopt menu_complete
 # include hidden files in completions
 _comp_options+=(globdots)
 
-# if a p10k config is available use it
-[[ -f $ZDOTDIR/p10k.zsh ]] && source $ZDOTDIR/p10k.zsh
+#####################
+# KEYBINDINGS
+#####################
+bindkey -e # temporarly emacs until i figure out vim
+
 
 # aliases should be loaded at the and of rc because aliases might become a
 # problem in plugins and custom scripts
 source "$ZDOTDIR/alias.zsh"
+
+# if a p10k config is available use it
+[[ -f $ZDOTDIR/p10k.zsh ]] && source $ZDOTDIR/p10k.zsh

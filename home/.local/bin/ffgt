@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+gt &> /dev/null &
+pidgt=$!
+firefox
+kill $pidgt

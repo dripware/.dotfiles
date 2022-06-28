@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # sourced by both display managers and login shells (tty and xserver)
+export IS_ZSH_LOADED=true
 
 export SHELL="$(which zsh)" # default shell
 
@@ -26,7 +27,12 @@ export LESSHISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/lesshst" # history cache fo
 
 export TMUX_TMPDIR="$XDG_RUNTIME_DIR"
 
-# add .local/bin to path
+# environment variables used by fzf
+source "${XDG_CONFIG_HOME:-$HOME/.config}/fzf/fzf_default_opts"
+
+# add npm global package binaries to path
+export PATH="${XDG_DATA_HOME:-$HOME/.local/share}/npm/bin:$PATH"
+# add .local/bin scripts and binaries to PATH
 export PATH="${XDG_BIN_HOME:-$HOME/.local/bin}:$PATH"
 
 # use neovim or vim as default editor if possible
@@ -36,4 +42,15 @@ elif command -v vim &> /dev/null; then
 	export EDITOR="vim"
 fi
 
+# use wezterm or urxvt as terminal if possible
+# you should configure your window manager to pick up $TERMINAL
+# because it doesn't recognize it by default
+# if command -v wezterm &> /dev/null; then 
+# 	export TERMINAL="wezterm"
+# elif command -v urxvtc &> /dev/null; then # because urxvt itself is a .local/bin script
+# 	# if wezterm is not avilable it's probably running in a vm
+# 	export TERMINAL="urxvt" 
+# else
+# 	export TERMINAL="xterm"
+# fi
 export DOTFILES="$HOME/.dotfiles"

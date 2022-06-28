@@ -42,36 +42,65 @@
   services = {
     xserver = {
       enable = true;
+      layout = "us,ir(pes_keypad)";
+      xkbOptions = "grp:lalt_lshift_toggle,caps:swapescape"; # map caps to escape.
       displayManager = {
-        defaultSession = "none+qtile";
+        # defaultSession = "none+xmonad";
         sddm = {
 	  enable = true;
 	  autoNumlock = true;
 	};
       };
       windowManager = {
-	qtile.enable = true;
+	xmonad = {
+          enable = true;
+	  enableContribAndExtras = true;
+	  extraPackages = hp: [
+	    hp.xmonad-contrib
+	    hp.xmonad-extras
+	    hp.xmonad
+	  ];
+	}; 
+        qtile = {
+          enable = true;
+        };
       };
+      # Enable touchpad support (enabled default in most desktopManager).
+      libinput.enable = true;
     };
+    # Enable CUPS to print documents.
+    printing.enable = true;
   };
 
-  
-
-  # Configure keymap in X11
-  services.xserver.layout = "us,ir(pes_keypad)";
-  services.xserver.xkbOptions = "grp:lalt_lshift_toggle,caps:swapescape"; # map caps to escape.
-
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
+  systemd.services.rofio = {
+    unitConfig = {
+      Description = "rofi openvpn - allows starting vpn as unprivileged";
+    };
+    serviceConfig = {
+      Restart="no";
+      Type="simple";
+      ExecStart="${pkgs.bash}/bin/bash /home/dripware/script";
+      StandardInput="socket";
+      StandardError="journal";
+    };
+  };
+  systemd.sockets.rofio = {
+    enable = true;
+    wantedBy = [ "sockets.target" ];
+    unitConfig = {
+      Description = "something socket";
+    };
+    socketConfig = {
+      ListenFIFO="%T/rofio.stdin";
+      Service="rofio.service";
+    };
+  };
 
   # Enable sound.
   sound.enable = true;
   hardware.pulseaudio.enable = true;
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  services.xserver.libinput.enable = true;
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  # Define a user account.
   users.users."${local_config.username}" = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.

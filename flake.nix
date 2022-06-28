@@ -25,8 +25,8 @@
       system = "x86_64-linux";
       username = local_config.username;
       pkgs = import nixpkgs {
+        inherit system;
       	allowUnfree = true;
-	system = "x86_64-linux";
       };
     in {
       # configuration are named "main" because the specific configuration for each user
@@ -38,11 +38,11 @@
         modules = [ ./system_config/${local_config.system_config}.nix ];
       };
       homeConfigurations.main = home-manager.lib.homeManagerConfiguration {
-        inherit system username pkgs;
-        configuration = import ./user_config/${local_config.user_config}.nix;
+        inherit pkgs;
+	modules = [
+	  ./user_config/${local_config.user_config}.nix
+	];
 	extraSpecialArgs = { inherit inputs; };
-        homeDirectory = "/home/${username}";
-        stateVersion = "21.11";
       };
     };
 }

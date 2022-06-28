@@ -80,14 +80,7 @@ ask_for_system_config(){
 	for config in $(ls $HERE/system_config -I base.nix); do
 		__print "\t- ${config%.*}"
 	done
-	__prompt "Enter system configuration profile you want to use: "
-}
-ask_for_user_config(){
-	__print "Avaliable user configs:"
-	for config in $(ls $HERE/user_config -I base.nix); do
-		__print "\t- ${config%.*}"
-	done
-	__prompt "Enter user configuration profile you want to use: "
+	__prompt "Enter configuration profile you want to use: "
 }
 ask_for_inputs(){
 	DISK="$(ask_for_disk)"
@@ -95,7 +88,7 @@ ask_for_inputs(){
 	MACHINE_NAME="$(ask_for_machine_name)"
 	USERNAME="$(ask_for_username)"
 	SYSTEM_CONFIG="$(ask_for_system_config)"
-	USER_CONFIG="$(ask_for_user_config)"
+	USER_CONFIG="$SYSTEM_CONFIG"
 	ROOT_PASSWORD="$(ask_for_password "Enter root password")"
 
 	if prompt_boolean "same password for $USERNAME"; then
