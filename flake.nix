@@ -11,6 +11,10 @@
       url = "github:kmonad/kmonad?dir=nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    rofi-blocks = { # rofi scripts on steroids
+      url = "github:dripware/rofi-blocks-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # local config flake contains bunch of information about this specific
     # installation of nixos. it's generated automatically by install.sh
@@ -20,7 +24,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-  outputs = { self, nixpkgs, home-manager, local_config, kmonad }@inputs:
+  outputs = { self, nixpkgs, home-manager, local_config, kmonad, rofi-blocks }@inputs:
     let 
       system = "x86_64-linux";
       username = local_config.username;

@@ -37,11 +37,13 @@
     openvpn
     unzip
     update-resolv-conf
-    rofi
+    lua
+    (rofi.override { plugins = [rofi-blocks]; })
   ];
 
   nixpkgs.overlays = [
     inputs.kmonad.overlays.default
+    inputs.rofi-blocks.overlay
   ];
   home.file = with builtins; 
     let

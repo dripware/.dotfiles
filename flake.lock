@@ -75,12 +75,33 @@
         "type": "indirect"
       }
     },
+    "rofi-blocks": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1656531628,
+        "narHash": "sha256-m1Zfvw2Oh5Vcx0DKIKRR8eh/8Veubyhzv+hJa7J4CoE=",
+        "owner": "dripware",
+        "repo": "rofi-blocks-nix",
+        "rev": "038576226f3278a947d2b0db9b3343d93b2d789a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dripware",
+        "repo": "rofi-blocks-nix",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "home-manager": "home-manager",
         "kmonad": "kmonad",
         "local_config": "local_config",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "rofi-blocks": "rofi-blocks"
       }
     },
     "utils": {
