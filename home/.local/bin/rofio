@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+[[ "$@" == "quit" ]] && exit 0
+
+VPNDIR="${XDG_DATA_HOME:-$HOME/.local/share}/vpn" 
+[ ! -d "$VPNDIR" ] && echo "$0: $VPNDIR is not a valid VPNDIR" && exit -1
+
+echo "list $VPNDIR" >> /tmp/vpnd.stdin
+cat /tmp/vpnd.stdout

@@ -72,27 +72,28 @@
     printing.enable = true;
   };
 
-  systemd.services.rofio = {
+  systemd.services.vpnd = {
+    path= [ pkgs.openvpn pkgs.gawk ];
     unitConfig = {
       Description = "rofi openvpn - allows starting vpn as unprivileged";
     };
     serviceConfig = {
       Restart="no";
       Type="simple";
-      ExecStart="${pkgs.bash}/bin/bash /home/dripware/script";
+      ExecStart="${pkgs.bash}/bin/bash /home/${local_config.username}/.local/bin/vpnd";
       StandardInput="socket";
       StandardError="journal";
     };
   };
-  systemd.sockets.rofio = {
+  systemd.sockets.vpnd = {
     enable = true;
     wantedBy = [ "sockets.target" ];
     unitConfig = {
       Description = "something socket";
     };
     socketConfig = {
-      ListenFIFO="%T/rofio.stdin";
-      Service="rofio.service";
+      ListenFIFO="%T/vpnd.stdin";
+      Service="vpnd.service";
     };
   };
 
