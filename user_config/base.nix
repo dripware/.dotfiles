@@ -1,7 +1,8 @@
-{ pkgs, inputs, ... }: rec {
+{ pkgs,config, inputs, ... }: rec {
   home.username = inputs.local_config.username;
   home.homeDirectory = "/home/${home.username}";
   programs.home-manager.enable = true;
+
 
   home.packages = with pkgs; [
     neofetch
@@ -39,7 +40,19 @@
     update-resolv-conf
     lua
     (rofi.override { plugins = [rofi-blocks]; })
+    mpv
+    ffmpeg
+    python
   ];
+
+  programs.gpg = {
+    enable = true;
+    homedir = "${config.home.homeDirectory}/.local/share/gnupg";
+  };
+  services.gpg-agent = {
+    enable = true;
+    pinentryFlavor = "gtk2";
+  };
 
   nixpkgs.overlays = [
     inputs.kmonad.overlays.default

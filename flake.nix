@@ -9,11 +9,9 @@
     };
     kmonad = { # keyboard moddification
       url = "github:kmonad/kmonad?dir=nix";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     rofi-blocks = { # rofi scripts on steroids
       url = "github:dripware/rofi-blocks-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # local config flake contains bunch of information about this specific

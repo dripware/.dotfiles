@@ -6,11 +6,11 @@
 alias noalias=""
 function __alias_trainer(){
 	local RESULT=$(alias-finder "$BUFFER")
-	# don't do anything if command is prefixed with noalias
-	if [[ "$RESULT" == "noalias"* ]]; then
+	if [[ "$BUFFER" == "noalias"* ]]; then
 		BUFFER="${BUFFER/noalias /}"
-		zle accept-line
-	elif [[ "$RESULT" != "" ]]; then 
+		zle accept-line && return 0
+	fi
+	if [[ "$RESULT" != "" ]]; then 
 		echo '\n\033[0;34mUse Alias Instead\033[0;30m'
 		alias-finder "$BUFFER"
 		echo -ne '\n'

@@ -15,7 +15,6 @@
     device = local_config.disk;
   };
 
-
   nix.extraOptions = "experimental-features = nix-command flakes";
 
   networking.hostName = local_config.machine_name; # Define your hostname.
@@ -45,7 +44,7 @@
       layout = "us,ir(pes_keypad)";
       xkbOptions = "grp:lalt_lshift_toggle,caps:swapescape"; # map caps to escape.
       displayManager = {
-        # defaultSession = "none+xmonad";
+        defaultSession = "none+xmonad";
         sddm = {
 	  enable = true;
 	  autoNumlock = true;

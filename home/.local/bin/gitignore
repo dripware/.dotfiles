@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+query=$(echo "$@" | tr " " ",")
+curl --silent https://toptal.com/developers/gitignore/api/"$query"

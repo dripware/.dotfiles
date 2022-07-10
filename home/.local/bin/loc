@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+[ -z "$1" ] && DIR="." || DIR="$1"
+cloc "$DIR" | tail -n2 | head -n1 | awk '{print $5}'
+unset DIR

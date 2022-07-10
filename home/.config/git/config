@@ -1,3 +1,5 @@
 [user]
-	email = itsdripware@gmail.com
-	name = dripware
+	email = oxcl@proton.me
+	name = oxcl
+[init]
+	defaultBranch = main

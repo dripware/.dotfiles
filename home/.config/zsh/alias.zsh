@@ -11,8 +11,8 @@ $LSD && alias ls='lsd'
 alias l='ls -lAh'
 alias la='ls -lAh'
 alias ll='ls -lh'
-$LSD && alias lt='lsd -lth --group-dirs=none'   || alias lt='ls -lth'
-$LSD && alias lS='lsd -lSh --group-dirs=none --total-size'   || alias lS='ls -lSh'
+$LSD && alias lt='lsd -lth --group-dirs=none' || alias lt='ls -lth'
+$LSD && alias lS='lsd -lSh --group-dirs=none --total-size' || alias lS='ls -lSh'
 alias l.='ls -ld .*'
 
 
@@ -43,7 +43,9 @@ alias df="df -h"
 alias du="du -h"
 
 # search in history with fzf
-alias history="history | fzf"
+function history(){
+  if [ -t 1 ]; then history | fzf; else history; fi
+}
 
 # ask before removing or overwriting
 alias rm="rm -i"
@@ -67,6 +69,8 @@ alias nixu="$SU && $FLKU && nixs"
 alias update="$SU && nixs && homs"
 alias upgrade="$SU && $FLKU && update && zert-update"
 
+unset LSD FLKU SU STFU GIT
+
 # zshrc is in ~/.local/bin with using exec it will run 'homs' after closingthe editor
 alias zshrc="exec zshrc"
 
@@ -79,5 +83,3 @@ alias copypath='echo $PWD | copy'
 
 # typing man is faster than run-help
 unalias run-help
-
-unset LSD FLKU SU STFU GIT

@@ -3,6 +3,3 @@
 
 # sets environment variables
 source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/env.zsh"
-
-# exports and environment variable used by fzf
-source "${XDG_CONFIG_HOME:-$HOME/.config}/fzf/fzf_default_opts"

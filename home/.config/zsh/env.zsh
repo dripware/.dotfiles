@@ -22,6 +22,8 @@ export GOPATH="${XDG_DATA_HOME:-$HOME/.local/sahre}/go"
 export UNISON="${XDG_DATA_HOME:-$HOME/.local/share}/unison" # file sync
 export ELECTRUMDIR="${XDG_DATA_HOME:-$HOME/.local/share}/electrum"
 export PASSWORD_STORE_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/pass"
+export GNUPGHOME="${XDG_DATA_HOME:-$HOME/.local/share}/gnupg"
+export PASSWORD_STORE_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/pass"
 
 export LESSHISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/lesshst" # history cache for less
 

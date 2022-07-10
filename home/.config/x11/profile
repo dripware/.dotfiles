@@ -1,5 +1,12 @@
 #!/usr/bin/env sh
+# source zsh profile for setting general environment variables and stuff
 source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/profile.zsh"
+# load xresourses used for theming xterm, urxvt and other applications
 xrdb $(dirname $BASH_SOURCE)/resources
+# inject $PATH and $DISPLAY to user systemd services
 systemctl --user import-environment PATH DISPLAY
+# xsessino.target is a systemd unit i made and all other user systemd units
+# get started after this. so i don't have to start each one individual
 systemctl --no-block --user start xsession.target
+
+urxvtd -q -o &
