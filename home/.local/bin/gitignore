@@ -1,3 +1,8 @@
 #!/usr/bin/env bash
-query=$(echo "$@" | tr " " ",")
-curl --silent "https://www.toptal.com/developers/gitignore/api/$query"
+if [[ -z "$@" ]]; then
+  # if no arguments passed list all available options
+  curl --silent https://www.toptal.com/developers/gitignore/api/list?format=lines
+else
+  query=$(echo "$@" | tr " " ",")
+  curl --silent "https://www.toptal.com/developers/gitignore/api/$query"
+fi
