@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 if [[ -z "$@" ]]; then
   # if no arguments passed list all available options
-  curl --silent https://www.toptal.com/developers/gitignore/api/list?format=lines
+  curl --silent "https://www.toptal.com/developers/gitignore/api/list?format=lines"
+  echo ""
 else
   query=$(echo "$@" | tr " " ",")
   curl --silent "https://www.toptal.com/developers/gitignore/api/$query"
