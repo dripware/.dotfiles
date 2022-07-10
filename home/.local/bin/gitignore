@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
+generic="windows,linux,osx,visualstudiocode,vs,vim,emacs,jetbrains,database,archive"
 if [[ -z "$@" ]]; then
-  # if no arguments passed list all available options
-  curl --silent "https://www.toptal.com/developers/gitignore/api/list?format=lines"
+  # if no arguments passed, create a generic gitignore
+  curl --silent "https://www.toptal.com/developers/gitignore/api/$generic"
   echo ""
 else
   query=$(echo "$@" | tr " " ",")
-  curl --silent "https://www.toptal.com/developers/gitignore/api/$query"
+  curl --silent "https://www.toptal.com/developers/gitignore/api/$generic,$query"
 fi
